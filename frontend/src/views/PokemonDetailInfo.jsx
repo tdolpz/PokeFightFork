@@ -1,68 +1,36 @@
-import {useEffect, useState} from "react";
-import {NavLink, useParams} from 'react-router-dom';
-import axios from "axios";
+import { useQuery } from '@tanstack/react-query';
+import { useParams } from 'react-router-dom';
+import axios from "axios"
+
+const fetchData = async (id, info) => {
+	const { data } = await axios.get(`http://localhost:8000/pokemon/${id}/${info}`);
+	return data;
+};
 
 function PokemonDetailInfo() {
 
-	const [entry, setEntry] = useState(null);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState([]);
 	const { pokemonId, pokemonInfo } = useParams();
+	const { data, isLoading, isError} = useQuery({
+		queryKey: ['myData', pokemonId, pokemonInfo],
+		queryFn: () => fetchData(pokemonId, pokemonInfo)
+	})
 
-	useEffect(() => {
-		axios
-			.get(`http://localhost:8000/pokemon/${pokemonId}/${pokemonInfo}`)
-			.then((res) => {
-				setEntry(res.data);
-				//console.log(res.data);
-				setLoading(false);
-			})
-			.catch((error) => {
-				console.error(error);
-				setError(error.message);
-				setLoading(false);
-			});
-	}, [pokemonInfo]);
-
-
-	let out = '';
-
-	if(!loading) {
-		if (pokemonInfo === 'base') {
-			console.log(entry);
-			out = (
-				<>
-					base
-				</>
-			);
-		}
-		if (pokemonInfo === 'type') {
-			console.log(entry);
-			out = (
-				<>
-					type
-				</>
-			);
-		}
-		if (pokemonInfo === 'name') {
-			console.log(entry);
-			out = (
-				<>
-					name
-				</>
-			);
-		}
+	if (isLoading) {
+		return <p>Loading...</p>;
 	}
-	else {
-		out = 'loading';
+
+	if (isError) {
+		return <p>Error fetching data</p>;
 	}
 
 	return (
-		<>
-			<div>PokemonDetailInfo</div>
-			{out}
-		</>
-	)
+		<div>
+			{Object.entries(data).map(([key, value], index) => (
+				<p key={index}>{key}: {value}</p>
+			))}
+		</div>
+	);
+
 }
 
 export default PokemonDetailInfo;

@@ -1,61 +1,34 @@
-import {useEffect, useState} from "react";
+import { useQuery } from '@tanstack/react-query';
 import { useParams } from 'react-router-dom';
-import axios from "axios";
+import axios from "axios"
+
+const fetchData = async (id) => {
+	const { data } = await axios.get(`http://localhost:8000/pokemon/${id}`);
+	return data;
+};
 
 function PokemonInfo() {
 
-	const [entry, setEntry] = useState(null);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState([]);
-	const { pokemonId } = useParams();
+	const { pokemonId} = useParams();
+	const { data, isLoading, isError} = useQuery({
+		queryKey: ['myData', pokemonId],
+		queryFn: () => fetchData(pokemonId)
+	})
 
-	useEffect(() => {
-		axios
-			.get(`http://localhost:8000/pokemon/${pokemonId}`)
-			.then((res) => {
-				setEntry(res.data);
-				console.log(res.data);
-				setLoading(false);
-			})
-			.catch((error) => {
-				console.error(error);
-				setError(error.message);
-				setLoading(false);
-			});
-	}, [pokemonId]);
-
-	let out = '';
-
-	if(loading) {
-		out = 'loading';
+	if (isLoading) {
+		return <p>Loading...</p>;
 	}
-	else {
-		out = (
-			<div>
-				<p>Name: {entry.name.english}</p>
-				<p>Type: {entry.type.join(', ')}</p>
-				<table>
-					<tbody>
-					<tr>
-						<td>Base:</td>
-						<td className="">
-							{Object.keys(entry.base).map((keyName, key) => (
-								<p key={key}>{keyName}: {entry.base[keyName]}</p>
-							))}
-						</td>
-					</tr>
-					</tbody>
-				</table>
-			</div>
-		);
+
+	if (isError) {
+		return <p>Error fetching data</p>;
 	}
 
 	return (
-		<>
-			<h1>POKEMON INFO</h1>
-			{out}
-		</>
-	)
+		<div>
+			{data.name.english}<br/>
+			<img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemonId}.svg`} alt={data.name.english} />
+		</div>
+	);
 }
 
 export default PokemonInfo;

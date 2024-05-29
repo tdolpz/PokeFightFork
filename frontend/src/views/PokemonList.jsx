@@ -1,47 +1,37 @@
-import axios from 'axios';
-import { useEffect, useState } from "react";
+import { useQuery } from '@tanstack/react-query';
 import { NavLink } from 'react-router-dom';
+import axios from 'axios';
+
+const fetchData = async () => {
+	const { data } = await axios.get(`http://localhost:8000/pokemon/`);
+	return data;
+};
+
 function PokemonList() {
 
-	const [entries, setEntries] = useState([]);
-	const [loading, setLoading] = useState(true);
-	const [error, setError] = useState([]);
+	const { data, isLoading, isError} = useQuery({
+		queryKey: ['myData'],
+		queryFn: fetchData
+	})
 
-	useEffect(() => {
-		axios
-			.get('http://localhost:8000/pokemon')
-			.then((res) => {
-				setEntries(res.data);
-				setLoading(false);
-			})
-			.catch((error) => {
-				console.error(error);
-				setError(error.message);
-				setLoading(false);
-			});
-	}, []);
-
-	let out = '';
-
-	if(loading) {
-		out = 'loading';
+	if (isLoading) {
+		return <p>Loading...</p>;
 	}
-	else {
-		out = entries.map(entry => {
-			return (
-				<div key={entry.id}>
-					<NavLink to={`/pokemon/${entry.id}`}>
-						{entry.name.english}
-					</NavLink>
-				</div>
-			);
-		});
+
+	if (isError) {
+		return <p>Error fetching data</p>;
 	}
 
 	return (
 		<>
 			<h1>POKEMON LIST</h1>
-			{out}
+			{data.map(entry => (
+				<div key={entry.id}>
+					<NavLink to={`/pokemon/${entry.id}`}>
+						{entry.name.english}
+					</NavLink>
+				</div>
+			))};
 		</>
 	)
 }
