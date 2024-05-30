@@ -26,7 +26,10 @@ function PokemonInfo() {
 	return (
 		<div>
 			{data.name.english}<br/>
-			<img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemonId}.svg`} alt={data.name.english} />
+			<img src={`https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${pokemonId}.svg`} alt={data.name.english} /><br/>
+			{Object.entries(data.base).map(([key, value], index) => (
+				<p key={index}>{key}: {value}</p>
+			))}
 		</div>
 	);
 }
