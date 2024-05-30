@@ -1,5 +1,6 @@
 import express from 'express';
 import cors from 'cors';
+import './database/dbConnect.js';
 import pokefightRouter from './routes/pokefightRouter.js';
 
 const app = express();
