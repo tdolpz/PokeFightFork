@@ -30,3 +30,6 @@ export const getPokemonInfo = async (req, res) => {
 		}
 	})
 };
+
+
+
