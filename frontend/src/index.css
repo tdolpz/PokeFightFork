@@ -11,9 +11,13 @@
 @layer components {
   .arena {
     @apply bg-indigo-950 w-screen h-screen;
-    @apply bg-[url('../public/boxring.png')] bg-no-repeat bg-center bg-cover p-8 lg:p-16;
+    @apply bg-[url('./assets/boxring.png')] bg-no-repeat bg-center bg-cover p-8 lg:p-16;
   }
   .arena-inner {
-    @apply max-w-[960px] lg:max-w-[75%] mx-auto bg-white/10 flex flex-col h-full items-center;
+    @apply max-w-[960px] lg:max-w-[75%] mx-auto flex flex-col h-full items-center bg-white/10;
+  }
+
+  button {
+    @apply block bg-amber-700 text-white rounded px-3 py-1 m-4;
   }
 }

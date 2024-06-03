@@ -1,4 +1,5 @@
 function Score() {
+
 	return (
 		<div>
 			SCORE

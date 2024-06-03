@@ -1,15 +1,14 @@
-import { useContext } from "react";
-import { StoreContext } from "../utils/context.js";
-import {showView} from "../utils/views.js";
+import { useNavigate } from "react-router-dom";
 
 function Fight() {
-	const viewStates = useContext(StoreContext);
+
+	const navigate = useNavigate();
 
 	return (
-		<div>
-			FIGHT
-			<p onClick={() => showView(viewStates, 'result')}>Click</p>
-		</div>
+		<>
+			<div>FIGHT</div>
+			<button onClick={() => navigate('/result')}>Click</button>
+		</>
 	)
 }
 

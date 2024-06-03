@@ -1,16 +1,14 @@
-import { useContext } from "react";
-import { StoreContext } from "../utils/context.js";
-import {showView} from "../utils/views.js";
+import { useNavigate } from "react-router-dom";
 
 function Shuffle() {
 
-	const viewStates = useContext(StoreContext);
+	const navigate = useNavigate();
 
 	return (
-		<div>
-			SHUFFLE
-			<p onClick={() => showView(viewStates, 'fight')}>Click</p>
-		</div>
+		<>
+			<div>SHUFFLE</div>
+			<button onClick={() => navigate('/fight')}>Click</button>
+		</>
 	)
 }
 

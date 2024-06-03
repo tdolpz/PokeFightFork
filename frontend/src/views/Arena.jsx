@@ -1,57 +1,55 @@
+import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState, useContext } from "react";
-import { StoreContext } from "../utils/context.js";
+import { Outlet, useNavigate } from "react-router-dom";
+import axios from 'axios';
+import fontpokefightarena from "../assets/fontpokefightarena.png";
 
-import Shuffle from "./Shuffle.jsx";
-import Fight from "./Fight.jsx";
-import Result from "./Result.jsx";
-import Score from "./Score.jsx";
+const fetchData = async () => {
+	const { data } = await axios.get(`http://localhost:8000/pokemon/`);
+	return data;
+};
 
 function Arena() {
 
-	// get context variables
-	const shuffleState = useContext(StoreContext);
-	const fightState = useContext(StoreContext);
-	const resultState = useContext(StoreContext);
-	const scoreState = useContext(StoreContext);
+	const { data, isLoading, isError} = useQuery({
+		queryKey: ['myData'],
+		queryFn: fetchData
+	})
 
-	// get and set state variables
-	const [isLoading, setIsLoading] = useState(true);
-	const [isShuffle, setIsShuffle] = useState(shuffleState);
-	const [isFight, setIsFight] = useState(fightState);
-	const [isResult, setIsResult] = useState(resultState);
-	const [isScore, setIsScore] = useState(scoreState);
+	// init navigate function
+	const navigate = useNavigate();
+
+	// get and set 'loading' state
+	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		setTimeout(()=> {
-			setIsLoading(false);
-			setIsShuffle(true);
+			setLoading(false);
+			navigate('/shuffle');
 		}, 1000);
 	}, []);
 
-	const viewStates = [
-		[isShuffle, setIsShuffle],
-		[isFight, setIsFight],
-		[isResult, setIsResult],
-		[isScore, setIsScore]
-	];
 
+	// loading spinner
 	const loadingSpinner = (
 		<div>LOADING ...</div>
 	);
 
+	// scene content
 	const scene = (
 		<>
-			{(isShuffle) && <StoreContext.Provider value={viewStates}><Shuffle/></StoreContext.Provider>}
-			{(isFight) && <StoreContext.Provider value={viewStates}><Fight/></StoreContext.Provider>}
-			{(isResult) && <StoreContext.Provider value={viewStates}><Result/></StoreContext.Provider>}
-			{(isScore) && <StoreContext.Provider value={viewStates}><Score/></StoreContext.Provider>}
+			<div className={"max-w-[500px]"}>
+				<img src={fontpokefightarena} alt="Pokefight-Arena"/>
+			</div>
+			<Outlet />
 		</>
 	);
 
+	// render component
 	return (
 		<div className="arena">
-			<div className="arena-inner">
-				{isLoading ? loadingSpinner : scene}
+			<div className={isLoading ? 'arena-inner justify-center' : 'arena-inner'}>
+				{loading ? loadingSpinner : scene}
 			</div>
 		</div>
 	)
