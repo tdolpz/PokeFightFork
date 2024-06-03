@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  body {
+    @apply text-amber-500;
+  }
+}
+
+@layer components {
+  .arena {
+    @apply bg-indigo-950 w-screen h-screen;
+    @apply bg-[url('../public/boxring.png')] bg-no-repeat bg-center bg-cover p-8 lg:p-16;
+  }
+  .arena-inner {
+    @apply max-w-[960px] lg:max-w-[75%] mx-auto bg-white/10 flex flex-col h-full items-center;
+  }
+}
