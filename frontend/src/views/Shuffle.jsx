@@ -20,7 +20,7 @@ function Shuffle() {
           <CardBack />
         </div>
       </div>
-      <PulseButton scene="fight" />
+      <PulseButton view="fight" />
       <div className="grid grid-cols-3 gap-8">
         <div>
           <img className="mx-auto pl-[10vw]" src={questMark} />
