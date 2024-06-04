@@ -1,13 +1,19 @@
 import { useQuery } from '@tanstack/react-query';
-import { useEffect, useState, useContext } from "react";
+import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
-import axios from 'axios';
+import axios from "axios";
+import { Context } from "../utils/context.js";
+import { getRandomCards } from "../utils/randomCards.js";
 import fontpokefightarena from "../assets/fontpokefightarena.png";
+
 
 const fetchData = async () => {
 	const { data } = await axios.get(`http://localhost:8000/pokemon/`);
 	return data;
 };
+
+const randomCards = getRandomCards(10, 1, 100);
+
 
 function Arena() {
 
@@ -47,11 +53,13 @@ function Arena() {
 
 	// render component
 	return (
-		<div className="arena">
-			<div className={isLoading ? 'arena-inner justify-center' : 'arena-inner'}>
-				{loading ? loadingSpinner : scene}
+		<Context.Provider value={{ data, isLoading, isError, randomCards }}>
+			<div className="arena">
+				<div className={loading ? 'arena-inner justify-center' : 'arena-inner'}>
+					{loading ? loadingSpinner : scene}
+				</div>
 			</div>
-		</div>
+		</Context.Provider>
 	)
 }
 
