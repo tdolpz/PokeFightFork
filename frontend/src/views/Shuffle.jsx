@@ -10,6 +10,7 @@ function Shuffle() {
   const navigate = useNavigate();
   const contextValue = useContext(Context);
   console.log(contextValue);
+
   return (
     <div className="w-full h-full flex flex-col justify-center">
       <div className="grid grid-cols-2 gap-8">
