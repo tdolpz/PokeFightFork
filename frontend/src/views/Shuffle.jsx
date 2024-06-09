@@ -1,6 +1,6 @@
-import { useContext } from "react";
+//import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { Context } from "../utils/context.js";
+//import { Context } from "../utils/context.js";
 import CardBack from "../components/CardBack.jsx";
 import PulseButton from "../components/PulseButton.jsx";
 import questMark from "../assets/questmarkblk.png";
@@ -8,10 +8,11 @@ import cardStack from "../assets/pokecardstackblk.png";
 
 function Shuffle() {
   const navigate = useNavigate();
-  const contextValue = useContext(Context);
-  console.log(contextValue);
+  //const contextValue = useContext(Context);
+  //console.log(contextValue);
 
   return (
+		<>
     <div className="w-full h-full flex flex-col justify-center">
       <div className="grid grid-cols-2 gap-8">
         <div className="flex justify-center bg-black/50">
@@ -21,7 +22,7 @@ function Shuffle() {
           <CardBack />
         </div>
       </div>
-      <PulseButton view="fight" />
+      <PulseButton view="shuffle" />
       <div className="grid grid-cols-3 gap-8">
         <div>
           <img className="mx-auto pl-[10vw]" src={questMark} />
@@ -34,10 +35,10 @@ function Shuffle() {
         </div>
       </div>
     </div>
-    // <>
-    // 	<div>Shuffle</div>
-    // 	<button onClick={() => navigate('/fight')}>Click</button>
-    // </>
+
+    <div>Shuffle</div>
+		<button onClick={() => navigate('/fight')}>Click</button>
+    </>
   );
 }
 

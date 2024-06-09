@@ -8,6 +8,7 @@
   }
 }
 
+
 @layer components {
   .arena {
     @apply bg-indigo-950 w-screen h-screen;
@@ -16,8 +17,5 @@
   .arena-inner {
     @apply max-w-[960px] lg:max-w-[75%] mx-auto flex flex-col h-full items-center bg-white/10;
   }
-
-  button {
-    @apply block bg-amber-700 text-white rounded px-3 py-1 m-4;
-  }
 }
+

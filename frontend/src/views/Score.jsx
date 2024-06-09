@@ -1,8 +1,7 @@
 function Score() {
-
 	return (
 		<div>
-			SCORE
+			sdsds
 		</div>
 	)
 }

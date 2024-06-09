@@ -1,18 +1,215 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../utils/context.js";
 
+import PokemonCard_Dev from "../components/PokemonCard_Dev.jsx";
+import PulseButton from "../components/PulseButton.jsx";
+import HandStack from "../components/HandStack.jsx";
+import versus from '../assets/versus.png';
+
+const getAttacker = () => {
+	return Math.floor(Math.random() * 2) + 1; // random 1 or 2
+}
+
+const getAttackMethod = () => {
+	return (Math.random() < 0.5) ? 'attack' : 'spattack'; // random true or false
+}
+
 function Fight() {
 	const navigate = useNavigate();
-	const contextValue = useContext(Context);
-	console.log(contextValue);
+	const context = useContext(Context);
+
+	const [attackPlayer, setAttackPlayer] = useState(getAttacker); // 1 or 2
+	const [attackMethod, setAttackMethod] = useState(getAttackMethod); // attack or spattack
+	const [hand1, setHand1] = useState(context.randomCards.player1);
+	const [hand2, setHand2] = useState(context.randomCards.player2);
+	const [life1, setLife1] = useState(100);
+	const [life2, setLife2] = useState(100);
+	const [newRound, setNewRound] = useState(false);
+	const [fightWinner, setFightWinner] = useState(null);
+
+
+	if (hand1.length === 0 || hand2.length === 0) {
+		navigate('/result', {
+			state:
+				{
+					hand1: hand1,
+					hand2: hand2
+				}
+			}
+		);
+		return;
+	}
+
+	console.log(hand1);
+	console.log(hand2);
+
+	// trigger new round
+	const isNewRound = (newrnd) => setNewRound(newrnd);
+
+	// init new round
+	const startNewRound = () => {
+
+		if (fightWinner === 1) setHand2(hand2.slice(1));
+		if (fightWinner === 2) setHand1(hand1.slice(1));
+		if (fightWinner === 0) {
+			setHand2(hand2.slice(1));
+			setHand1(hand1.slice(1));
+		}
+
+		setLife1(100);
+		setLife2(100);
+		setNewRound(false);
+	}
+
+	const getFightParams = (pokemonId) => {
+		const params = context.data.filter(entry => entry.id === pokemonId)[0].base;
+		let fightParams = {};
+		for (let [key, value] of Object.entries(params)) {
+			key = key.replace(/.\s/g, "").toLowerCase(); // remove dot and white spaces in key names
+			fightParams[key] = value;
+		}
+		return (pokemonId) ? fightParams : false;
+	}
+
+	const getFightResult = () => {
+
+		const fightParams1 = getFightParams(hand1[0]);
+		const fightParams2 = getFightParams(hand2[0]);
+		const defenseMethod = (attackMethod === 'attack') ? 'defense' : 'spdefense';
+
+		if (attackPlayer === 1) {
+
+			let newLife1, newLife2;
+			let diff = fightParams1[attackMethod] - fightParams2[defenseMethod];
+
+			console.log('###############');
+			console.log('attacker: ', 'player 1');
+			console.log('attack method: ', attackMethod);
+			console.log('attack value: ', fightParams1[attackMethod]);
+
+			console.log('defender: ', 'player 2');
+			console.log('defense method defender: ', defenseMethod);
+			console.log('defense value defender: ', fightParams2[defenseMethod]);
+
+			console.log('difference: ', diff);
+			console.log('differencePercentage: ', Math.round(diff * 100 / fightParams2.hp));
+
+
+			// Player 1 has won -> update card of player 2
+			if (diff > 0) {
+				setFightWinner(1);
+				newLife2 = life2 - Math.round(diff * 100 / fightParams2.hp);
+				console.log('newLife2: ', newLife2);
+				setLife2(newLife2);
+			}
+
+			// Player 2 has won -> update card of player 1
+			else if (diff < 0) {
+				setFightWinner(2);
+				newLife1 = life1 + Math.round(diff * 100 / fightParams1.hp);
+				console.log('newLife1: ', newLife1);
+				setLife1(newLife1);
+			}
+
+			// Draw
+			else {
+				setFightWinner(0);
+				console.log('DRAW');
+			}
+		}
+		if (attackPlayer === 2) {
+			let newLife1, newLife2;
+			let diff = fightParams2[attackMethod] - fightParams1[defenseMethod];
+
+			console.log('###############');
+			console.log('attacker: ', 'player 2');
+			console.log('attack method: ', attackMethod);
+			console.log('attack value: ', fightParams2[attackMethod]);
+
+			console.log('defender: ', 'player 1');
+			console.log('defense method defender: ', defenseMethod);
+			console.log('defense value defender: ', fightParams1[defenseMethod]);
+
+			console.log('difference: ', diff);
+			console.log('differencePercentage: ', Math.round(diff * 100 / fightParams1.hp));
+
+			// Player 2 has won -> update card of player 1
+			if (diff > 0) {
+				setFightWinner(2);
+				newLife1 = life1 - Math.round(diff * 100 / fightParams1.hp);
+				console.log('newLife1: ', newLife1);
+				setLife1(newLife1);
+			}
+
+			// Player 1 has won -> update card of player 2
+			else if (diff < 0) {
+				setFightWinner(1);
+				newLife2 = life2 + Math.round(diff * 100 / fightParams2.hp);
+				console.log('newLife2: ', newLife2);
+				setLife2(newLife2);
+			}
+
+			// Draw
+			else {
+				setFightWinner(0);
+				console.log('DRAW');
+			}
+		}
+	}
+
+	const handleFightClick = () => {
+		setAttackPlayer(getAttacker); 		// define who is attack player
+		setAttackMethod(getAttackMethod); // define which attack method to be used
+		getFightResult();
+	};
+
 
 	return (
-		<>
-			<div>FIGHT</div>
-			<button onClick={() => navigate('/result')}>Click</button>
-		</>
+		<div className="size-full flex flex-col justify-center">
+
+			<div className="relative">
+				<div className="absolute top-0 left-0 z-0 size-full flex items-center justify-center">
+					<img src={versus} alt="#" className="max-w-40" />
+				</div>
+				<div className="grid grid-cols-2 justify-items-center relative z-10">
+
+					<PokemonCard_Dev
+						id={hand1[0]}
+						life={life1}
+						isAttacker={attackPlayer === 1}
+						attackMethod={attackMethod}
+						isNewRound={isNewRound}
+					/>
+
+					<PokemonCard_Dev
+						id={hand2[0]}
+						life={life2}
+						isAttacker={attackPlayer === 2}
+						attackMethod={attackMethod}
+						isNewRound={isNewRound}
+					/>
+
+				</div>
+			</div>
+
+			{newRound ?
+				<button onClick={startNewRound}>new Round</button> :
+				<PulseButton view="fight" handleClick={handleFightClick} />}
+
+
+			{/*<div className="grid grid-cols-2 justify-items-center">*/}
+			{/*	<HandStack hand={hand1}/>*/}
+			{/*	<HandStack hand={hand2}/>*/}
+			{/*</div>*/}
+
+		</div>
 	)
 }
 
 export default Fight;
+
+
+
+
+

@@ -12,7 +12,7 @@ const fetchData = async () => {
 };
 
 // get random cards
-const randomCards = getRandomCards(10, 1, 100);
+const randomCards = getRandomCards(6, 1, 100);
 
 function Arena() {
   // Call useQuery to fetch pokemon data
