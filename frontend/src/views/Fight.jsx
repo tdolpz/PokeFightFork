@@ -16,8 +16,10 @@ const getAttackMethod = () => {
 }
 
 function Fight() {
+
 	const navigate = useNavigate();
 	const context = useContext(Context);
+	console.log(context);
 
 	const [attackPlayer, setAttackPlayer] = useState(getAttacker); // 1 or 2
 	const [attackMethod, setAttackMethod] = useState(getAttackMethod); // attack or spattack
@@ -28,40 +30,10 @@ function Fight() {
 	const [newRound, setNewRound] = useState(false);
 	const [fightWinner, setFightWinner] = useState(null);
 
-
-	if (hand1.length === 0 || hand2.length === 0) {
-		navigate('/result', {
-			state:
-				{
-					hand1: hand1,
-					hand2: hand2
-				}
-			}
-		);
-		return;
-	}
-
 	console.log(hand1);
 	console.log(hand2);
 
-	// trigger new round
-	const isNewRound = (newrnd) => setNewRound(newrnd);
-
-	// init new round
-	const startNewRound = () => {
-
-		if (fightWinner === 1) setHand2(hand2.slice(1));
-		if (fightWinner === 2) setHand1(hand1.slice(1));
-		if (fightWinner === 0) {
-			setHand2(hand2.slice(1));
-			setHand1(hand1.slice(1));
-		}
-
-		setLife1(100);
-		setLife2(100);
-		setNewRound(false);
-	}
-
+	// get fight params
 	const getFightParams = (pokemonId) => {
 		const params = context.data.filter(entry => entry.id === pokemonId)[0].base;
 		let fightParams = {};
@@ -72,6 +44,31 @@ function Fight() {
 		return (pokemonId) ? fightParams : false;
 	}
 
+	// trigger new round
+	const isNewRound = (newrnd) => setNewRound(newrnd);
+
+	// init new round
+	const startNewRound = () => {
+		if (fightWinner === 1) setHand2(hand2.slice(1));
+		if (fightWinner === 2) setHand1(hand1.slice(1));
+		if (fightWinner === 0) {
+			setHand2(hand2.slice(1));
+			setHand1(hand1.slice(1));
+		}
+		setLife1(100);
+		setLife2(100);
+		setNewRound(false);
+	}
+
+  // manage fight click
+	const handleFightClick = (e) => {
+		e.preventDefault();
+		setAttackPlayer(getAttacker); 		// define who is attack player
+		setAttackMethod(getAttackMethod); // define which attack method to be used
+		getFightResult();
+	};
+
+	// determine fight result
 	const getFightResult = () => {
 
 		const fightParams1 = getFightParams(hand1[0]);
@@ -158,12 +155,10 @@ function Fight() {
 		}
 	}
 
-	const handleFightClick = () => {
-		setAttackPlayer(getAttacker); 		// define who is attack player
-		setAttackMethod(getAttackMethod); // define which attack method to be used
-		getFightResult();
-	};
-
+	if (hand1.length === 0 || hand2.length === 0) {
+		navigate('/arena/result', {state: {hand1: hand1, hand2: hand2}});
+		return;
+	}
 
 	return (
 		<div className="size-full flex flex-col justify-center">
@@ -196,7 +191,6 @@ function Fight() {
 			{newRound ?
 				<button onClick={startNewRound}>new Round</button> :
 				<PulseButton view="fight" handleClick={handleFightClick} />}
-
 
 			{/*<div className="grid grid-cols-2 justify-items-center">*/}
 			{/*	<HandStack hand={hand1}/>*/}

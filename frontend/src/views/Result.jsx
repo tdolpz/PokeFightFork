@@ -22,7 +22,6 @@ function Result() {
 	}
 
 	console.log('victory: ', victory, 'defeat: ', defeat);
-
 	const navigate = useNavigate();
 
 	return (
@@ -43,7 +42,7 @@ function Result() {
 
 			</div>
 
-			<button onClick={() => navigate('/score')}>Click</button>
+			<button onClick={() => navigate('/arena/score')}>Click</button>
 		</>
 	)
 }
