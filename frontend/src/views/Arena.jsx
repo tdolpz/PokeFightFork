@@ -41,13 +41,14 @@ function Arena() {
   // render snippet for loading spinner
   const loadingSpinner = <div>LOADING ...</div>;
 
+
+	console.log(location.href);
+
+
   // render snippet for scene content
   // <Outlet /> displays different views depending on the selected nested route
   const scene = (
     <>
-      <div className={"max-w-[500px] mb-8"}>
-        <img src={fontpokefightarena} alt="Pokefight-Arena" />
-      </div>
       <Outlet />
     </>
   );

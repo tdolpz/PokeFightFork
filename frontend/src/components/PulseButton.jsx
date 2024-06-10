@@ -3,6 +3,7 @@ import shuffleBtn from "../assets/fontshuffledealblk.png";
 import fightBtn from "../assets/fontfightblk2.png";
 import resultBtn from "../assets/fontviewscore.png";
 import newRoundBtn from "../assets/fontnewround.png";
+import playAgainBtn from "../assets/fontplayagain.png";
 
 function PulseButton({ view, handleClick, newRound= false }) {
 
@@ -12,6 +13,7 @@ function PulseButton({ view, handleClick, newRound= false }) {
 	if (view === "fight") btn = fightBtn;
 	if (view === "fight" && newRound === true) btn = newRoundBtn;
 	if (view === "result") btn = resultBtn;
+	if (view === "score") btn = playAgainBtn;
 
 	return (
 		<button className="my-4 mx-auto animate-pulse" onClick={handleClick}>

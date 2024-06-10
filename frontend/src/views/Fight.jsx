@@ -6,6 +6,7 @@ import PokemonCard from "../components/PokemonCard.jsx";
 import PulseButton from "../components/PulseButton.jsx";
 import HandStack from "../components/HandStack.jsx";
 import versus from '../assets/versus.png';
+import fontpokefightarena from "../assets/fontpokefightarena.png";
 
 const getAttacker = () => {
 	return Math.floor(Math.random() * 2) + 1; // random 1 or 2
@@ -165,7 +166,11 @@ function Fight() {
 	}
 
 	return (
-		<div className="size-full flex flex-col justify-center">
+		<>
+			<div className={"max-w-[500px] mb-8"}>
+				<img src={fontpokefightarena} alt="Pokefight-Arena" />
+			</div>
+			<div className="size-full flex flex-col justify-center">
 
 			<div className="relative">
 				<div className="absolute top-0 left-0 z-0 size-full flex items-center justify-center">
@@ -199,6 +204,7 @@ function Fight() {
 			{/*</div>*/}
 
 		</div>
+		</>
 	)
 }
 

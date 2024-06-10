@@ -15,7 +15,7 @@
     @apply bg-[url('./assets/boxring.png')] bg-no-repeat bg-center bg-cover p-8 lg:p-20;
   }
   .arena-inner {
-    @apply max-w-[960px] lg:max-w-[75%] mx-auto flex flex-col h-full items-center bg-white/10;
+    @apply max-w-[960px] lg:max-w-[75%] mx-auto flex flex-col h-full items-center;
   }
 }
 
