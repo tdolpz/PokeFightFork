@@ -2,7 +2,9 @@ import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../utils/context.js";
 
-import PokemonCard_Dev from "../components/PokemonCard_Dev.jsx";
+import PokemonCard from "../components/PokemonCard.jsx";
+//import PokeCardNew from "../components/pokemon_card/PokeCardNew.jsx";
+
 import PulseButton from "../components/PulseButton.jsx";
 import HandStack from "../components/HandStack.jsx";
 import versus from '../assets/versus.png';
@@ -68,6 +70,7 @@ function Fight() {
 		getFightResult();
 	};
 
+
 	// determine fight result
 	const getFightResult = () => {
 
@@ -75,6 +78,7 @@ function Fight() {
 		const fightParams2 = getFightParams(hand2[0]);
 		const defenseMethod = (attackMethod === 'attack') ? 'defense' : 'spdefense';
 
+		// Player 1 is Attacker
 		if (attackPlayer === 1) {
 
 			let newLife1, newLife2;
@@ -115,6 +119,8 @@ function Fight() {
 				console.log('DRAW');
 			}
 		}
+
+		// Player 2 is Attacker
 		if (attackPlayer === 2) {
 			let newLife1, newLife2;
 			let diff = fightParams2[attackMethod] - fightParams1[defenseMethod];
@@ -168,28 +174,25 @@ function Fight() {
 					<img src={versus} alt="#" className="max-w-40" />
 				</div>
 				<div className="grid grid-cols-2 justify-items-center relative z-10">
-
-					<PokemonCard_Dev
+					<PokemonCard
 						id={hand1[0]}
 						life={life1}
 						isAttacker={attackPlayer === 1}
 						attackMethod={attackMethod}
 						isNewRound={isNewRound}
 					/>
-
-					<PokemonCard_Dev
+					<PokemonCard
 						id={hand2[0]}
 						life={life2}
 						isAttacker={attackPlayer === 2}
 						attackMethod={attackMethod}
 						isNewRound={isNewRound}
 					/>
-
 				</div>
 			</div>
 
 			{newRound ?
-				<button onClick={startNewRound}>new Round</button> :
+				<PulseButton view="fight" handleClick={startNewRound} newRound={newRound} />:
 				<PulseButton view="fight" handleClick={handleFightClick} />}
 
 			{/*<div className="grid grid-cols-2 justify-items-center">*/}
