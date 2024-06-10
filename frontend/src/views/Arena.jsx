@@ -11,10 +11,12 @@ const fetchData = async () => {
   return data;
 };
 
-// get random cards
-const randomCards = getRandomCards(6, 1, 200);
 
 function Arena() {
+
+	// get random cards
+	const randomCards = getRandomCards(6, 1, 200);
+
   // Call useQuery to fetch pokemon data
   const { data, isLoading, isError } = useQuery({
     queryKey: ["pokemonData"],

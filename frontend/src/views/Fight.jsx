@@ -1,9 +1,7 @@
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Context } from "../utils/context.js";
-
 import PokemonCard from "../components/PokemonCard.jsx";
-//import PokeCardNew from "../components/pokemon_card/PokeCardNew.jsx";
 
 import PulseButton from "../components/PulseButton.jsx";
 import HandStack from "../components/HandStack.jsx";
