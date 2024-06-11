@@ -13,7 +13,7 @@ function Score() {
 	const navigate = useNavigate();
 
 	const playAgain = () => {
-		navigate('/');
+		navigate('/arena/shuffle');
 	}
 
 	const players = [

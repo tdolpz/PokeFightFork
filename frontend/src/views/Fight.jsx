@@ -7,6 +7,8 @@ import PulseButton from "../components/PulseButton.jsx";
 import HandStack from "../components/HandStack.jsx";
 import versus from '../assets/versus.png';
 import fontpokefightarena from "../assets/fontpokefightarena.png";
+import you from "../assets/fontyoublk.png";
+import rival from "../assets/fontrivalblk.png";
 
 const getAttacker = () => {
 	return Math.floor(Math.random() * 2) + 1; // random 1 or 2
@@ -20,7 +22,7 @@ function Fight() {
 
 	const navigate = useNavigate();
 	const context = useContext(Context);
-	console.log(context);
+	//console.log(context);
 
 	const [attackPlayer, setAttackPlayer] = useState(getAttacker); // 1 or 2
 	const [attackMethod, setAttackMethod] = useState(getAttackMethod); // attack or spattack
@@ -31,8 +33,8 @@ function Fight() {
 	const [newRound, setNewRound] = useState(false);
 	const [fightWinner, setFightWinner] = useState(null);
 
-	console.log(hand1);
-	console.log(hand2);
+	console.log('-->', hand1);
+	console.log('-->', hand2);
 
 	// get fight params
 	const getFightParams = (pokemonId) => {
@@ -83,6 +85,7 @@ function Fight() {
 			let newLife1, newLife2;
 			let diff = fightParams1[attackMethod] - fightParams2[defenseMethod];
 
+			/*
 			console.log('###############');
 			console.log('attacker: ', 'player 1');
 			console.log('attack method: ', attackMethod);
@@ -94,13 +97,13 @@ function Fight() {
 
 			console.log('difference: ', diff);
 			console.log('differencePercentage: ', Math.round(diff * 100 / fightParams2.hp));
-
+			*/
 
 			// Player 1 has won -> update card of player 2
 			if (diff > 0) {
 				setFightWinner(1);
 				newLife2 = life2 - Math.round(diff * 100 / fightParams2.hp);
-				console.log('newLife2: ', newLife2);
+				//console.log('newLife2: ', newLife2);
 				setLife2(newLife2);
 			}
 
@@ -108,14 +111,14 @@ function Fight() {
 			else if (diff < 0) {
 				setFightWinner(2);
 				newLife1 = life1 + Math.round(diff * 100 / fightParams1.hp);
-				console.log('newLife1: ', newLife1);
+				//console.log('newLife1: ', newLife1);
 				setLife1(newLife1);
 			}
 
 			// Draw
 			else {
 				setFightWinner(0);
-				console.log('DRAW');
+				//console.log('DRAW');
 			}
 		}
 
@@ -124,6 +127,7 @@ function Fight() {
 			let newLife1, newLife2;
 			let diff = fightParams2[attackMethod] - fightParams1[defenseMethod];
 
+			/*
 			console.log('###############');
 			console.log('attacker: ', 'player 2');
 			console.log('attack method: ', attackMethod);
@@ -135,12 +139,13 @@ function Fight() {
 
 			console.log('difference: ', diff);
 			console.log('differencePercentage: ', Math.round(diff * 100 / fightParams1.hp));
+			*/
 
 			// Player 2 has won -> update card of player 1
 			if (diff > 0) {
 				setFightWinner(2);
 				newLife1 = life1 - Math.round(diff * 100 / fightParams1.hp);
-				console.log('newLife1: ', newLife1);
+				//console.log('newLife1: ', newLife1);
 				setLife1(newLife1);
 			}
 
@@ -148,17 +153,19 @@ function Fight() {
 			else if (diff < 0) {
 				setFightWinner(1);
 				newLife2 = life2 + Math.round(diff * 100 / fightParams2.hp);
-				console.log('newLife2: ', newLife2);
+				//console.log('newLife2: ', newLife2);
 				setLife2(newLife2);
 			}
 
 			// Draw
 			else {
 				setFightWinner(0);
-				console.log('DRAW');
+				//console.log('DRAW');
 			}
 		}
 	}
+
+
 
 	if (hand1.length === 0 || hand2.length === 0) {
 		navigate('/arena/result', {state: {hand1: hand1, hand2: hand2}});
@@ -176,32 +183,41 @@ function Fight() {
 				<div className="absolute top-0 left-0 z-0 size-full flex items-center justify-center">
 					<img src={versus} alt="#" className="max-w-40" />
 				</div>
+
 				<div className="grid grid-cols-2 justify-items-center relative z-10">
-					<PokemonCard
-						id={hand1[0]}
-						life={life1}
-						isAttacker={attackPlayer === 1}
-						attackMethod={attackMethod}
-						isNewRound={isNewRound}
-					/>
-					<PokemonCard
-						id={hand2[0]}
-						life={life2}
-						isAttacker={attackPlayer === 2}
-						attackMethod={attackMethod}
-						isNewRound={isNewRound}
-					/>
+
+					<div className="flex justify-center flex-col items-center">
+						<img src={you} alt="#" className="h-16 mb-4" />
+						<PokemonCard
+							id={hand1[0]}
+							life={life1}
+							isAttacker={attackPlayer === 1}
+							attackMethod={attackMethod}
+							isNewRound={isNewRound}
+						/>
+					</div>
+
+					<div className="flex justify-center flex-col items-center">
+						<img src={rival} alt="#" className="h-16 mb-4" />
+						<PokemonCard
+							id={hand2[0]}
+							life={life2}
+							isAttacker={attackPlayer === 2}
+							attackMethod={attackMethod}
+							isNewRound={isNewRound}
+						/>
+					</div>
+
 				</div>
 			</div>
 
-			{newRound ?
-				<PulseButton view="fight" handleClick={startNewRound} newRound={newRound} />:
-				<PulseButton view="fight" handleClick={handleFightClick} />}
+			{newRound && <PulseButton view="fight" handleClick={startNewRound} newRound={newRound} />}
+			{!newRound && <PulseButton view="fight" handleClick={handleFightClick} />}
 
-			{/*<div className="grid grid-cols-2 justify-items-center">*/}
-			{/*	<HandStack hand={hand1}/>*/}
-			{/*	<HandStack hand={hand2}/>*/}
-			{/*</div>*/}
+			<div className="grid grid-cols-2 justify-items-center">
+				<HandStack hand={hand1}/>
+				<HandStack hand={hand2}/>
+			</div>
 
 		</div>
 		</>

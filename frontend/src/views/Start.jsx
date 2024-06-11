@@ -17,9 +17,18 @@ function Start() {
 				<div className="max-w-[960px] lg:max-w-[75%] mx-auto flex flex-col h-full items-center justify-center">
 
 					<img src={enterthearena} alt="#" className="" />
-					<form className="mt-12">
-						<input type="text" placeholder="Enter Your Name" className="bg-transparent text-2xl placeholder:text-amber-500/50" autoFocus="autofocus" />
-					</form>
+
+					<div>
+						<form className="mt-12">
+								<input
+									name="myInput"
+									placeholder="INSERT NAME"
+									className="bg-transparent mx-16 text-2xl  text-amber-500 placeholder:text-amber-500/70 text-center"
+									autoFocus="autofocus"
+								/>
+						</form>
+					</div>
+
 					<img src={fontlineinput} alt="#" className="mb-8" />
 
 					<button onClick={enterArena}>
@@ -29,6 +38,7 @@ function Start() {
 				</div>
 			</div>
 		</div>
+
 
 	)
 }

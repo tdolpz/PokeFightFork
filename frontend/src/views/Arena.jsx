@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Context } from "../utils/context.js";
-import fontpokefightarena from "../assets/fontpokefightarena.png";
 import { getRandomCards } from "../utils/randomCards.js";
 
 const fetchData = async () => {
@@ -11,11 +10,10 @@ const fetchData = async () => {
   return data;
 };
 
-
 function Arena() {
 
 	// get random cards
-	const randomCards = getRandomCards(6, 1, 200);
+	const randomCards = getRandomCards(8, 1, 200);
 
   // Call useQuery to fetch pokemon data
   const { data, isLoading, isError } = useQuery({
@@ -40,10 +38,6 @@ function Arena() {
 
   // render snippet for loading spinner
   const loadingSpinner = <div>LOADING ...</div>;
-
-
-	console.log(location.href);
-
 
   // render snippet for scene content
   // <Outlet /> displays different views depending on the selected nested route

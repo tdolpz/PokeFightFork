@@ -12,7 +12,7 @@
 @layer components {
   .arena {
     @apply bg-indigo-950 w-screen h-screen;
-    @apply bg-[url('./assets/boxring.png')] bg-no-repeat bg-center bg-cover p-8 lg:p-20;
+    @apply bg-[url('./assets/boxring2.jpg')] bg-no-repeat bg-center bg-cover p-8 lg:p-20;
   }
   .arena-inner {
     @apply max-w-[960px] lg:max-w-[75%] mx-auto flex flex-col h-full items-center;
