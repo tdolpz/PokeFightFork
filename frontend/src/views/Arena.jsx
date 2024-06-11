@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import axios from "axios";
 import { Context } from "../utils/context.js";
-import fontpokefightarena from "../assets/fontpokefightarena.png";
 import { getRandomCards } from "../utils/randomCards.js";
 
 const fetchData = async () => {
@@ -11,10 +10,11 @@ const fetchData = async () => {
   return data;
 };
 
-// get random cards
-const randomCards = getRandomCards(10, 1, 100);
-
 function Arena() {
+
+	// get random cards
+	const randomCards = getRandomCards(8, 1, 200);
+
   // Call useQuery to fetch pokemon data
   const { data, isLoading, isError } = useQuery({
     queryKey: ["pokemonData"],
@@ -32,8 +32,8 @@ function Arena() {
   useEffect(() => {
     setTimeout(() => {
       setLoading(false);
-      navigate("/shuffle");
-    }, 1000);
+      navigate("/arena/shuffle");
+    }, 500);
   }, []);
 
   // render snippet for loading spinner
@@ -43,9 +43,6 @@ function Arena() {
   // <Outlet /> displays different views depending on the selected nested route
   const scene = (
     <>
-      <div className={"max-w-[500px] mb-8"}>
-        <img src={fontpokefightarena} alt="Pokefight-Arena" />
-      </div>
       <Outlet />
     </>
   );

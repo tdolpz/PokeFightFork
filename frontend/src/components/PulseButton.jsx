@@ -1,17 +1,25 @@
+import startBtn from "../assets/fontstart.png";
 import shuffleBtn from "../assets/fontshuffledealblk.png";
 import fightBtn from "../assets/fontfightblk2.png";
+import resultBtn from "../assets/fontviewscore.png";
+import newRoundBtn from "../assets/fontnewround.png";
+import playAgainBtn from "../assets/fontplayagain.png";
 
-function PulseButton({ view }) {
-  console.log(view);
-  let btn;
-  if (view === "shuffle") btn = shuffleBtn;
-  if (view === "fight") btn = fightBtn;
+function PulseButton({ view, handleClick, newRound= false }) {
 
-  return (
-    <button className="my-8 max-w-56 mx-auto animate-ping bg-sky-400 opacity-75 delay-1000">
-      <img src={btn} />
-    </button>
-  );
+	let btn;
+	if (view === "start") btn = startBtn;
+	if (view === "shuffle") btn = shuffleBtn;
+	if (view === "fight") btn = fightBtn;
+	if (view === "fight" && newRound === true) btn = newRoundBtn;
+	if (view === "result") btn = resultBtn;
+	if (view === "score") btn = playAgainBtn;
+
+	return (
+		<button className="my-4 mx-auto animate-pulse" onClick={handleClick}>
+			<img src={btn} className="h-16 w-auto" alt="#"/>
+		</button>
+	);
 }
 
 export default PulseButton;
