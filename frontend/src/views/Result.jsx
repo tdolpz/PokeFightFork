@@ -6,9 +6,12 @@ import victoryImg from "../assets/victory.png";
 import you from "../assets/fontyoublk.png";
 import rival from "../assets/fontrivalblk.png";
 import fontpokefightarena from "../assets/fontpokefightarena.png";
+//import voicemod from "../assets/pokemon-voicemod.mp3";
+
 
 function Result() {
 
+	//const voiceMod = new Audio(voicemod);
 	const navigate = useNavigate();
 	const { state } = useLocation();
 	const hand1 = state.hand1;
@@ -17,7 +20,11 @@ function Result() {
 	console.log(hand1);
 	console.log(hand2);
 
-	const toScoreView = () => navigate('/arena/score');
+	const toScoreView = () => {
+		navigate('/arena/score');
+		//voiceMod.volume = 0.5;
+		//voiceMod.play();
+	}
 
 	let victory;
 	if (hand1.length === 0) victory = 2;

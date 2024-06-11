@@ -1,7 +1,10 @@
 import { Context } from "../utils/context.js";
-import { useContext, useEffect } from "react";
+import React, { useContext, useEffect } from "react";
 import getTypeColor from "./TypeColor.jsx";
 import HpBar from "./HpBar.jsx";
+import firstPlace from "../assets/FirstPlace.png";
+import secondPlace from "../assets/SecondPlace.png";
+import thirdPlace from "../assets/ThirdPlace.png";
 //import PokemonStats from "./pokemon_card/PokemonStats.jsx";
 
 function PokemonCard({ id, life, isAttacker, attackMethod, isNewRound }) {
@@ -45,7 +48,8 @@ function PokemonCard({ id, life, isAttacker, attackMethod, isNewRound }) {
 
 				{/* Type Container */}
 				<div className='m-2 flex items-center justify-center'>
-					<span className='bg-gray-100 text-gray-800 text-sm font-bold text-center me-2 px-2.5 py-0.5 rounded dark:bg-gray-700 dark:text-amber-400 border border-gray-500'>
+
+					<span className='text-sm font-bold text-center me-2 px-2.5 py-0.5 rounded bg-gray-700 text-amber-400 border border-gray-500'>
 						TYPE:{" "}
 					</span>
 					{type.map((type, index) => {
@@ -67,12 +71,23 @@ function PokemonCard({ id, life, isAttacker, attackMethod, isNewRound }) {
 				<HpBar life={life} />
 
 				{/* fight type */}
-				<div className="text-black mt-4">{isAttacker ? <span>{attackType}</span> : <span>{defenceType}</span>}</div>
+				{isAttacker && attackMethod==='attack' ? (
+					<span className="text-xs font-bold ml-2 me-1 mt-2 px-2.5 py-0.5 rounded bg-red-500 text-white">{attackType}</span>
+				) : isAttacker && attackMethod==='spattack' ? (
+					<span className="text-xs font-bold ml-2 me-1 mt-2 px-2.5 py-0.5 rounded bg-yellow-500 text-white">{attackType}</span>
+				) : !isAttacker && defenceType==='Defense' ? (
+					<span className="text-xs font-bold me-2 mt-2 px-2.5 py-0.5 rounded bg-blue-500 text-white">{defenceType}</span>
+				) : !isAttacker && defenceType==='Special Defense' ? (
+					<span className="text-xs font-bold me-2 mt-2 px-2.5 py-0.5 rounded bg-green-500 text-white">{defenceType}</span>
+				): (
+					<p></p>
+				)}
 
 				{/* Stats */}
 				{/*<div>*/}
 				{/*	/!*<PokemonStats pokemon={pokemon} />*!/ STATS*/}
 				{/*</div>*/}
+
 
 			</div>
 		</div>

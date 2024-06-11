@@ -1,13 +1,36 @@
+//import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import fontstart from "../assets/fontstart.png";
+import PulseButton from "../components/PulseButton.jsx";
 import darkbrickentrance from "../assets/darkbrickentrance2.jpg";
 import enterthearena from "../assets/enterthearena.png";
 import fontlineinput from "../assets/fontlineinput.png";
+import loudspeaker from "../assets/loudspeaker.png";
+import pokegym from "../assets/pokemon-gym.mp3";
 
 function Start() {
 
+	const pokemonGym = new Audio(pokegym);
 	const navigate = useNavigate();
-	const enterArena = () => navigate('/arena');
+
+	// useEffect(() => {
+	// 	console.log('play');
+	// 	pokemonGym.play();
+	// }, [pokegym]);
+
+	const enterArena = () => {
+		navigate('/arena');
+		// pokemonGym.sound = 0.1;
+		// pokemonGym.play();
+	}
+
+	const playSound = () => {
+		if (pokemonGym.paused) {
+			pokemonGym.play();
+		}
+		else {
+			pokemonGym.pause();
+		}
+	}
 
 	return (
 
@@ -31,15 +54,16 @@ function Start() {
 
 					<img src={fontlineinput} alt="#" className="mb-8" />
 
-					<button onClick={enterArena}>
-						<img src={fontstart} alt="#" className="" />
+					<button onClick={playSound} className="opacity-60 my-6">
+						<img className="max-w-8 mr-4" src={loudspeaker} />
 					</button>
+
+					<PulseButton view="start" handleClick={enterArena} />
+
 
 				</div>
 			</div>
 		</div>
-
-
 	)
 }
 

@@ -9,6 +9,8 @@ import versus from '../assets/versus.png';
 import fontpokefightarena from "../assets/fontpokefightarena.png";
 import you from "../assets/fontyoublk.png";
 import rival from "../assets/fontrivalblk.png";
+import punchSound from "../assets/punch.mp3";
+import boxingbell from "../assets/boxingbell.mp3";
 
 const getAttacker = () => {
 	return Math.floor(Math.random() * 2) + 1; // random 1 or 2
@@ -33,6 +35,9 @@ function Fight() {
 	const [newRound, setNewRound] = useState(false);
 	const [fightWinner, setFightWinner] = useState(null);
 
+	const punch = new Audio(punchSound);
+	const bell = new Audio(boxingbell);
+
 	console.log('-->', hand1);
 	console.log('-->', hand2);
 
@@ -48,7 +53,10 @@ function Fight() {
 	}
 
 	// trigger new round
-	const isNewRound = (newrnd) => setNewRound(newrnd);
+	const isNewRound = (newrnd) => {
+		setNewRound(newrnd);
+		bell.play();
+	}
 
 	// init new round
 	const startNewRound = () => {
@@ -69,6 +77,7 @@ function Fight() {
 		setAttackPlayer(getAttacker); 		// define who is attack player
 		setAttackMethod(getAttackMethod); // define which attack method to be used
 		getFightResult();
+		punch.play();
 	};
 
 

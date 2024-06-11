@@ -6,14 +6,16 @@ import secondPlace from "../assets/SecondPlace.png";
 import thirdPlace from "../assets/ThirdPlace.png";
 import fontpokefightarena from "../assets/fontpokefightarena.png";
 import trophy from "../assets/poketrophygold-removedbg.png";
-
+import voicemod from "../assets/pokemon-voicemod.mp3";
 
 function Score() {
 
 	const navigate = useNavigate();
+	const voiceMod = new Audio(voicemod);
 
 	const playAgain = () => {
 		navigate('/arena/shuffle');
+		voiceMod.stop();
 	}
 
 	const players = [

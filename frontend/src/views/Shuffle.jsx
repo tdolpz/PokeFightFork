@@ -5,7 +5,6 @@ import questMark from "../assets/questmarkblk.png";
 import cardStack from "../assets/pokecardstackblk.png";
 import fontpokefightarena from "../assets/fontpokefightarena.png";
 
-
 function Shuffle() {
   const navigate = useNavigate();
 
