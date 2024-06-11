@@ -1,29 +1,35 @@
+import {useEffect} from "react";
 import {useNavigate} from "react-router-dom";
+import {UseContextStore} from "../utils/ContextProvider.jsx";
 import PulseButton from "../components/PulseButton.jsx";
 import darkbrickentrance from "../assets/darkbrickentrance2.jpg";
 import enterthearena from "../assets/enterthearena.png";
 import fontlineinput from "../assets/fontlineinput.png";
 import pokegym from "../assets/pokemon-gym.mp3";
 
-function Start() {
+function Start({abc}) {
 
+	const {setPlayerName} = UseContextStore();
 	const pokemonGym = new Audio(pokegym);
 	const navigate = useNavigate();
 
+	console.log(abc);
+
+	useEffect(() => {
+	}, []);
+
 	const enterArena = () => {
-		navigate('/arena');
-		// pokemonGym.sound = 0.1;
-		// pokemonGym.play();
+		navigate('/shuffle');
+	}
+
+	const handleChange = (e) => {
+		setPlayerName(e.target.value);
 	}
 
 	const playSound = () => {
-		if (pokemonGym.paused) {
-			pokemonGym.play();
-		} else {
-			pokemonGym.pause();
-		}
+		if (pokemonGym.paused) pokemonGym.play();
+		else pokemonGym.pause();
 	}
-
 
 	return (
 		<div className="relative bg-indigo-950">
@@ -39,6 +45,7 @@ function Start() {
 							name="myInput"
 							className="start-input w-[500px]"
 							autoFocus="autofocus"
+							onChange={handleChange}
 						/>
 					</form>
 					<img src={fontlineinput} alt="#" className="mb-8"/>
