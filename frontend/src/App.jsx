@@ -11,12 +11,6 @@ function App() {
 		<div>
 			<Routes>
 				<Route path='/' element={<Start />}/>
-				<Route path='/arena' element={<Arena />}>
-					<Route path='/arena/shuffle' element={<Shuffle />} />
-					<Route path='/arena/fight' element={<Fight />} />
-					<Route path='/arena/result' element={<Result />} />
-					<Route path='/arena/score' element={<Score />} />
-				</Route>
 			</Routes>
 		</div>
   )
