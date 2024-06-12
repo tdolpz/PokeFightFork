@@ -1,62 +1,48 @@
-import { useQuery } from "@tanstack/react-query";
-import { useEffect, useState } from "react";
-import { Outlet, useNavigate } from "react-router-dom";
+import {useQuery} from "@tanstack/react-query";
+import {useEffect, useState} from "react";
+import {Outlet, useNavigate} from "react-router-dom";
+import {UseContextStore} from "../utils/ContextProvider.jsx";
 import axios from "axios";
-import { Context } from "../utils/context.js";
-import { getRandomCards } from "../utils/randomCards.js";
 
 const fetchData = async () => {
-  const { data } = await axios.get(`http://localhost:8000/pokemon/`);
-  return data;
+	const {data} = await axios.get(`http://localhost:8000/pokemon/`);
+	return data;
 };
 
 function Arena() {
 
-	// get random cards
-	const randomCards = getRandomCards(8, 1, 200);
+	// Call useQuery to fetch pokemon data
+	const {data, isLoading, isError} = useQuery({
+		queryKey: ["pokemonData"],
+		queryFn: fetchData,
+	});
 
-  // Call useQuery to fetch pokemon data
-  const { data, isLoading, isError } = useQuery({
-    queryKey: ["pokemonData"],
-    queryFn: fetchData,
-  });
+	const {setPokemonData, setBnbn} = UseContextStore();
+	const navigate = useNavigate();
+	const [loading, setLoading] = useState(true);
 
-  // init navigate function
-  const navigate = useNavigate();
+	useEffect(() => {
+		if (!isLoading) {
+			setPokemonData(data);
+			setBnbn('fsdffsfsdfsd');
+		}
+		setTimeout(() => {
+			setLoading(false);
+			navigate("/start");
+		}, 500);
+	}, [data]);
 
-  // get and set 'loading' state
-  const [loading, setLoading] = useState(true);
-
-  // perform delay before redirecting to 'shuffle' view
-  // navigate() calls the route and executes the redirect to the selected view
-  useEffect(() => {
-    setTimeout(() => {
-      setLoading(false);
-      navigate("/arena/shuffle");
-    }, 500);
-  }, []);
-
-  // render snippet for loading spinner
-  const loadingSpinner = <div>LOADING ...</div>;
-
-  // render snippet for scene content
-  // <Outlet /> displays different views depending on the selected nested route
-  const scene = (
-    <>
-      <Outlet />
-    </>
-  );
-
-  // render component
-  return (
-    <Context.Provider value={{ data, isLoading, isError, randomCards }}>
-      <div className="arena">
-        <div className={loading ? "arena-inner justify-center" : "arena-inner"}>
-          {loading ? loadingSpinner : scene}
-        </div>
-      </div>
-    </Context.Provider>
-  );
+	return (
+		<>
+			{loading ? (<div className="">LOADING ...</div>) : (
+				<>
+					{/*<div className="absolute top-8 right-8 z-20 bg-fuchsia-500">AUDIO CONTROLS</div>*/}
+					<Outlet/>
+				</>
+			)
+			}
+		</>
+	);
 }
 
 export default Arena;

@@ -1,34 +1,35 @@
-import {useEffect} from "react";
+import {useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {UseContextStore} from "../utils/ContextProvider.jsx";
 import PulseButton from "../components/PulseButton.jsx";
 import darkbrickentrance from "../assets/darkbrickentrance2.jpg";
 import enterthearena from "../assets/enterthearena.png";
 import fontlineinput from "../assets/fontlineinput.png";
-import pokegym from "../assets/pokemon-gym.mp3";
 
-function Start({abc}) {
+function Start() {
 
 	const {setPlayerName} = UseContextStore();
-	const pokemonGym = new Audio(pokegym);
 	const navigate = useNavigate();
-
-	console.log(abc);
-
-	useEffect(() => {
-	}, []);
+	const inputElement = useRef();
+	const [filledOut, setFilledOut] = useState(false);
 
 	const enterArena = () => {
-		navigate('/shuffle');
+		if (filledOut) navigate('/shuffle');
+		if (!filledOut) {
+			alert('Please enter your name.');
+			inputElement.current.focus();
+		}
 	}
 
 	const handleChange = (e) => {
+		e.preventDefault();
 		setPlayerName(e.target.value);
+		setFilledOut(true);
 	}
 
-	const playSound = () => {
-		if (pokemonGym.paused) pokemonGym.play();
-		else pokemonGym.pause();
+	const handleSubmit = (e) => {
+		e.preventDefault();
+		enterArena();
 	}
 
 	return (
@@ -38,13 +39,15 @@ function Start({abc}) {
 				<div className="inner-container">
 
 					<img src={enterthearena} alt="#" className="mb-8"/>
-					<form className="">
-						<label className="block text-center mb-4 text-amber-500/60 tracking-widest">INSERT YOUR
+					<form onSubmit={handleSubmit}>
+						<label className="block text-center mb-4 text-amber-500/60 tracking-widest" htmlFor="myInput">INSERT YOUR
 							NAME</label>
 						<input
+							id="myInput"
 							name="myInput"
 							className="start-input w-[500px]"
 							autoFocus="autofocus"
+							ref={inputElement}
 							onChange={handleChange}
 						/>
 					</form>

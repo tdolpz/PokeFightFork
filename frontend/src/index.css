@@ -3,13 +3,24 @@
 @tailwind utilities;
 
 @layer base {
+  .pokefont-outline {
+    text-shadow: 3px 3px 0 black,
+    3px -3px 0 black,
+    -3px 3px 0 black,
+    -3px -3px 0 black,
+    3px 0 0 black,
+    0 3px 0 black,
+    -3px 0 0 black,
+    0 -3px 0 black,
+    5px 5px 0 red;
+  }
+
   body {
     @apply text-amber-500;
   }
 }
 
 @layer components {
-
   .bg-arena {
     @apply bg-[url('./assets/boxring2.jpg')] bg-no-repeat bg-center;
   }
@@ -20,11 +31,11 @@
   }
 
   .arena-inner {
-    @apply max-w-[960px] lg:max-w-[75%] mx-auto flex flex-col h-full items-center;
+    @apply max-w-[960] lg:max-w-[75%] mx-auto flex flex-col h-full items-center;
   }
 
   .inner-container {
-    @apply flex flex-col items-center justify-center min-h-screen;
+    @apply flex flex-col items-center justify-center min-h-screen max-w-5xl mx-auto;
   }
 
   .start-input {
@@ -32,6 +43,12 @@
     @apply placeholder:text-amber-500/70 placeholder:-translate-y-4;
     @apply focus:outline-none focus:border-transparent focus:ring-0;
   }
-
 }
 
+@font-face {
+  font-family: "pokemon";
+  font-style: normal;
+  font-weight: normal;
+  src: local('Pokemon Solid Normal'),
+  url('../public/pokemon-solid.woff') format('woff');
+}
