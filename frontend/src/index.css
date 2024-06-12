@@ -43,6 +43,8 @@
     @apply placeholder:text-amber-500/70 placeholder:-translate-y-4;
     @apply focus:outline-none focus:border-transparent focus:ring-0;
   }
+
+
 }
 
 @font-face {

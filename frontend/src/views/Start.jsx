@@ -5,10 +5,13 @@ import PulseButton from "../components/PulseButton.jsx";
 import darkbrickentrance from "../assets/darkbrickentrance2.jpg";
 import enterthearena from "../assets/enterthearena.png";
 import fontlineinput from "../assets/fontlineinput.png";
+import loudspeaker from "../assets/loudspeaker.png";
+import pokegym from "../assets/pokemon-gym.mp3";
 
 function Start() {
 
 	const {setPlayerName} = UseContextStore();
+	const pokemonGym = new Audio(pokegym);
 	const navigate = useNavigate();
 	const inputElement = useRef();
 	const [filledOut, setFilledOut] = useState(false);
@@ -32,6 +35,14 @@ function Start() {
 		enterArena();
 	}
 
+	const playSound = () => {
+		if (pokemonGym.paused) {
+			pokemonGym.play();
+		} else {
+			pokemonGym.pause();
+		}
+	}
+
 	return (
 		<div className="relative bg-indigo-950">
 			<img src={darkbrickentrance} alt="#" className={"absolute top-0 left-0 h-full w-full object-cover z-0"}/>
@@ -40,7 +51,8 @@ function Start() {
 
 					<img src={enterthearena} alt="#" className="mb-8"/>
 					<form onSubmit={handleSubmit}>
-						<label className="block text-center mb-4 text-amber-500/60 tracking-widest" htmlFor="myInput">INSERT YOUR
+						<label className="block text-center text-amber-500/60 tracking-widest text-xl" htmlFor="myInput">INSERT
+							YOUR
 							NAME</label>
 						<input
 							id="myInput"
@@ -52,6 +64,10 @@ function Start() {
 						/>
 					</form>
 					<img src={fontlineinput} alt="#" className="mb-8"/>
+
+					<button onClick={playSound} className="opacity-60 my-6">
+						<img className="max-w-8 mr-4" src={loudspeaker}/>
+					</button>
 
 					<PulseButton view="start" handleClick={enterArena}/>
 
