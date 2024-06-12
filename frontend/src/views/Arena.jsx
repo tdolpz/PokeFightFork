@@ -17,24 +17,25 @@ function Arena() {
 		queryFn: fetchData,
 	});
 
-	const {setPokemonData, setBnbn} = UseContextStore();
+	const {setPokemonData} = UseContextStore();
 	const navigate = useNavigate();
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		if (!isLoading) {
 			setPokemonData(data);
-			setBnbn('fsdffsfsdfsd');
 		}
 		setTimeout(() => {
 			setLoading(false);
 			navigate("/start");
-		}, 500);
+		}, 600);
 	}, [data]);
 
 	return (
 		<>
-			{loading ? (<div className="">LOADING ...</div>) : (
+			{loading ? (
+				<div className="w-screen h-screen flex justify-center items-center bg-[#101721]">LOADING ...</div>
+			) : (
 				<>
 					{/*<div className="absolute top-8 right-8 z-20 bg-fuchsia-500">AUDIO CONTROLS</div>*/}
 					<Outlet/>

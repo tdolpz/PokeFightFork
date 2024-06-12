@@ -23,7 +23,7 @@ const getAttackMethod = () => {
 
 function Fight() {
 
-	const {pokemonData} = UseContextStore();
+	const {pokemonData, setOpenCard1, setOpenCard2, openCard1, openCard2} = UseContextStore();
 	const randomCards = getRandomCards(8, 1, 200);
 	const navigate = useNavigate();
 
@@ -35,6 +35,7 @@ function Fight() {
 	const [life1, setLife1] = useState(100);
 	const [life2, setLife2] = useState(100);
 	const [newRound, setNewRound] = useState(false);
+	//const [gameOver, setGameOver] = useState(false);
 	const [fightWinner, setFightWinner] = useState(null);
 
 	const punch = new Audio(punchSound);
@@ -57,7 +58,6 @@ function Fight() {
 	// trigger new round
 	const isNewRound = (newrnd) => {
 		setNewRound(newrnd);
-		bell.play();
 	}
 
 	// init new round
@@ -81,7 +81,6 @@ function Fight() {
 		getFightResult();
 		punch.play();
 	};
-
 
 	// determine fight result
 	const getFightResult = () => {
@@ -176,10 +175,27 @@ function Fight() {
 		}
 	}
 
-
 	if (hand1.length === 0 || hand2.length === 0) {
-		navigate('/arena/result', {state: {hand1: hand1, hand2: hand2}});
+
+		navigate('/result', {
+			state: {
+				hand1: hand1,
+				hand2: hand2,
+				openCard1: openCard1,
+				openCard2: openCard2,
+				life1: life1,
+				life2: life2,
+				isAttacker: (attackPlayer === 1),
+				attackMethod: attackMethod
+			}
+		});
 		return;
+	}
+
+	if (newRound) {
+		bell.play();
+		setOpenCard1(hand1[0]);
+		setOpenCard2(hand2[0]);
 	}
 
 	return (
@@ -229,10 +245,11 @@ function Fight() {
 					{newRound && <PulseButton view="fight" handleClick={startNewRound} newRound={newRound}/>}
 					{!newRound && <PulseButton view="fight" handleClick={handleFightClick}/>}
 
-					<div className="grid grid-cols-2 justify-items-center">
+					<div className="grid grid-cols-2 justify-items-center w-full">
 						<HandStack hand={hand1}/>
 						<HandStack hand={hand2}/>
 					</div>
+
 				</div>
 			</div>
 		</div>

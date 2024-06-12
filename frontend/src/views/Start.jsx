@@ -45,7 +45,7 @@ function Start() {
 						<input
 							id="myInput"
 							name="myInput"
-							className="start-input w-[500px]"
+							className="start-input w-[500px] font-pokemon text-pokemon text-3xl pokefont-outline tracking-[3px] h-16"
 							autoFocus="autofocus"
 							ref={inputElement}
 							onChange={handleChange}
