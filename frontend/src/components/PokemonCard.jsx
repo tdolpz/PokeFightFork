@@ -1,13 +1,9 @@
-import { Context } from "../utils/context.js";
-import React, { useContext, useEffect } from "react";
+import {useEffect} from "react";
+import {UseContextStore} from "../utils/ContextProvider.jsx";
 import getTypeColor from "./TypeColor.jsx";
 import HpBar from "./HpBar.jsx";
-import firstPlace from "../assets/FirstPlace.png";
-import secondPlace from "../assets/SecondPlace.png";
-import thirdPlace from "../assets/ThirdPlace.png";
-//import PokemonStats from "./pokemon_card/PokemonStats.jsx";
 
-function PokemonCard({ id, life, isAttacker, attackMethod, isNewRound }) {
+function PokemonCard({id, life, isAttacker, attackMethod, isNewRound}) {
 
 	useEffect(() => {
 		if (life <= 0) {
@@ -15,11 +11,10 @@ function PokemonCard({ id, life, isAttacker, attackMethod, isNewRound }) {
 		}
 	}, [life]);
 
-
 	if (life <= 0) life = 0;
 
-	const context = useContext(Context);
-	const pokemonData = context.data;
+	const {pokemonData} = UseContextStore();
+	
 	const data = pokemonData.filter((pokemon => pokemon.id === id))[0];
 	const name = data.name.english;
 	const type = data.type;
@@ -30,11 +25,10 @@ function PokemonCard({ id, life, isAttacker, attackMethod, isNewRound }) {
 	let attackType, defenceType;
 
 	if (isAttacker) {
-		if (attackMethod==='spattack') attackType = 'Special Attack';
+		if (attackMethod === 'spattack') attackType = 'Special Attack';
 		else attackType = 'Attack';
-	}
-	else {
-		if (attackMethod==='spattack') defenceType = 'Special Defense'
+	} else {
+		if (attackMethod === 'spattack') defenceType = 'Special Defense'
 		else defenceType = 'Defense'
 	}
 
@@ -49,7 +43,8 @@ function PokemonCard({ id, life, isAttacker, attackMethod, isNewRound }) {
 				{/* Type Container */}
 				<div className='m-2 flex items-center justify-center'>
 
-					<span className='text-sm font-bold text-center me-2 px-2.5 py-0.5 rounded bg-gray-700 text-amber-400 border border-gray-500'>
+					<span
+						className='text-sm font-bold text-center me-2 px-2.5 py-0.5 rounded bg-gray-700 text-amber-400 border border-gray-500'>
 						TYPE:{" "}
 					</span>
 					{type.map((type, index) => {
@@ -68,18 +63,22 @@ function PokemonCard({ id, life, isAttacker, attackMethod, isNewRound }) {
 				/>
 
 				{/* HpBar */}
-				<HpBar life={life} />
+				<HpBar life={life}/>
 
 				{/* fight type */}
-				{isAttacker && attackMethod==='attack' ? (
-					<span className="text-xs font-bold ml-2 me-1 mt-2 px-2.5 py-0.5 rounded bg-red-500 text-white">{attackType}</span>
-				) : isAttacker && attackMethod==='spattack' ? (
-					<span className="text-xs font-bold ml-2 me-1 mt-2 px-2.5 py-0.5 rounded bg-yellow-500 text-white">{attackType}</span>
-				) : !isAttacker && defenceType==='Defense' ? (
-					<span className="text-xs font-bold me-2 mt-2 px-2.5 py-0.5 rounded bg-blue-500 text-white">{defenceType}</span>
-				) : !isAttacker && defenceType==='Special Defense' ? (
-					<span className="text-xs font-bold me-2 mt-2 px-2.5 py-0.5 rounded bg-green-500 text-white">{defenceType}</span>
-				): (
+				{isAttacker && attackMethod === 'attack' ? (
+					<span
+						className="text-xs font-bold ml-2 me-1 mt-2 px-2.5 py-0.5 rounded bg-red-500 text-white">{attackType}</span>
+				) : isAttacker && attackMethod === 'spattack' ? (
+					<span
+						className="text-xs font-bold ml-2 me-1 mt-2 px-2.5 py-0.5 rounded bg-yellow-500 text-white">{attackType}</span>
+				) : !isAttacker && defenceType === 'Defense' ? (
+					<span
+						className="text-xs font-bold me-2 mt-2 px-2.5 py-0.5 rounded bg-blue-500 text-white">{defenceType}</span>
+				) : !isAttacker && defenceType === 'Special Defense' ? (
+					<span
+						className="text-xs font-bold me-2 mt-2 px-2.5 py-0.5 rounded bg-green-500 text-white">{defenceType}</span>
+				) : (
 					<p></p>
 				)}
 

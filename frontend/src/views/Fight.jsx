@@ -1,12 +1,13 @@
-import { useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { Context } from "../utils/context.js";
+import {useState} from "react";
+import {useNavigate} from "react-router-dom";
+import {UseContextStore} from "../utils/ContextProvider.jsx";
 import PokemonCard from "../components/PokemonCard.jsx";
-
 import PulseButton from "../components/PulseButton.jsx";
 import HandStack from "../components/HandStack.jsx";
+import {getRandomCards} from "../utils/randomCards.js";
+import boxring from "../assets/boxring2.jpg";
+import pokefightarena from "../assets/fontpokefightarena.png";
 import versus from '../assets/versus.png';
-import fontpokefightarena from "../assets/fontpokefightarena.png";
 import you from "../assets/fontyoublk.png";
 import rival from "../assets/fontrivalblk.png";
 import punchSound from "../assets/punch.mp3";
@@ -22,17 +23,19 @@ const getAttackMethod = () => {
 
 function Fight() {
 
+	const {pokemonData, setOpenCard1, setOpenCard2, openCard1, openCard2} = UseContextStore();
+	const randomCards = getRandomCards(8, 1, 200);
 	const navigate = useNavigate();
-	const context = useContext(Context);
-	//console.log(context);
 
 	const [attackPlayer, setAttackPlayer] = useState(getAttacker); // 1 or 2
 	const [attackMethod, setAttackMethod] = useState(getAttackMethod); // attack or spattack
-	const [hand1, setHand1] = useState(context.randomCards.player1);
-	const [hand2, setHand2] = useState(context.randomCards.player2);
+	const [hand1, setHand1] = useState(randomCards.player1);
+	const [hand2, setHand2] = useState(randomCards.player2);
+
 	const [life1, setLife1] = useState(100);
 	const [life2, setLife2] = useState(100);
 	const [newRound, setNewRound] = useState(false);
+	//const [gameOver, setGameOver] = useState(false);
 	const [fightWinner, setFightWinner] = useState(null);
 
 	const punch = new Audio(punchSound);
@@ -43,7 +46,7 @@ function Fight() {
 
 	// get fight params
 	const getFightParams = (pokemonId) => {
-		const params = context.data.filter(entry => entry.id === pokemonId)[0].base;
+		const params = pokemonData.filter(entry => entry.id === pokemonId)[0].base;
 		let fightParams = {};
 		for (let [key, value] of Object.entries(params)) {
 			key = key.replace(/.\s/g, "").toLowerCase(); // remove dot and white spaces in key names
@@ -55,7 +58,6 @@ function Fight() {
 	// trigger new round
 	const isNewRound = (newrnd) => {
 		setNewRound(newrnd);
-		bell.play();
 	}
 
 	// init new round
@@ -71,7 +73,7 @@ function Fight() {
 		setNewRound(false);
 	}
 
-  // manage fight click
+	// manage fight click
 	const handleFightClick = (e) => {
 		e.preventDefault();
 		setAttackPlayer(getAttacker); 		// define who is attack player
@@ -79,7 +81,6 @@ function Fight() {
 		getFightResult();
 		punch.play();
 	};
-
 
 	// determine fight result
 	const getFightResult = () => {
@@ -174,62 +175,85 @@ function Fight() {
 		}
 	}
 
-
-
 	if (hand1.length === 0 || hand2.length === 0) {
-		navigate('/arena/result', {state: {hand1: hand1, hand2: hand2}});
+
+		navigate('/result', {
+			state: {
+				hand1: hand1,
+				hand2: hand2,
+				openCard1: openCard1,
+				openCard2: openCard2,
+				life1: life1,
+				life2: life2,
+				isAttacker: (attackPlayer === 1),
+				attackMethod: attackMethod
+			}
+		});
 		return;
 	}
 
+	if (newRound) {
+		bell.play();
+		setOpenCard1(hand1[0]);
+		setOpenCard2(hand2[0]);
+	}
+
 	return (
-		<>
-			<div className={"max-w-[500px] mb-8"}>
-				<img src={fontpokefightarena} alt="Pokefight-Arena" />
-			</div>
-			<div className="size-full flex flex-col justify-center">
 
-			<div className="relative">
-				<div className="absolute top-0 left-0 z-0 size-full flex items-center justify-center">
-					<img src={versus} alt="#" className="max-w-40" />
-				</div>
+		<div className="relative bg-indigo-950">
+			<img src={boxring} alt="#" className={"absolute top-0 left-0 h-full w-full object-cover z-0"}/>
+			<div className="relative min-h-screen z-10">
+				<div className="inner-container">
 
-				<div className="grid grid-cols-2 justify-items-center relative z-10">
+					<img src={pokefightarena} alt="Pokefight-Arena" className="w-full max-w-[500px] mb-12"/>
 
-					<div className="flex justify-center flex-col items-center">
-						<img src={you} alt="#" className="h-16 mb-4" />
-						<PokemonCard
-							id={hand1[0]}
-							life={life1}
-							isAttacker={attackPlayer === 1}
-							attackMethod={attackMethod}
-							isNewRound={isNewRound}
-						/>
+					<div className="grid grid-cols-2 justify-items-center relative z-10 w-full">
+						<img src={you} alt="#" className="h-16 mb-4"/>
+						<img src={rival} alt="#" className="h-16 mb-4"/>
 					</div>
 
-					<div className="flex justify-center flex-col items-center">
-						<img src={rival} alt="#" className="h-16 mb-4" />
-						<PokemonCard
-							id={hand2[0]}
-							life={life2}
-							isAttacker={attackPlayer === 2}
-							attackMethod={attackMethod}
-							isNewRound={isNewRound}
-						/>
+
+					<div className="relative w-full">
+
+						<div className="absolute top-0 left-0 z-0 size-full flex items-center justify-center">
+							<img src={versus} alt="#" className="max-w-40"/>
+						</div>
+
+						<div className="grid grid-cols-2 justify-items-center relative z-10 w-full">
+							<div className="flex justify-center flex-col items-center">
+								<PokemonCard
+									id={hand1[0]}
+									life={life1}
+									isAttacker={attackPlayer === 1}
+									attackMethod={attackMethod}
+									isNewRound={isNewRound}
+								/>
+							</div>
+							<div className="flex justify-center flex-col items-center">
+								<PokemonCard
+									id={hand2[0]}
+									life={life2}
+									isAttacker={attackPlayer === 2}
+									attackMethod={attackMethod}
+									isNewRound={isNewRound}
+								/>
+							</div>
+						</div>
+
+					</div>
+
+					{newRound && <PulseButton view="fight" handleClick={startNewRound} newRound={newRound}/>}
+					{!newRound && <PulseButton view="fight" handleClick={handleFightClick}/>}
+
+					<div className="grid grid-cols-2 justify-items-center w-full">
+						<HandStack hand={hand1}/>
+						<HandStack hand={hand2}/>
 					</div>
 
 				</div>
 			</div>
-
-			{newRound && <PulseButton view="fight" handleClick={startNewRound} newRound={newRound} />}
-			{!newRound && <PulseButton view="fight" handleClick={handleFightClick} />}
-
-			<div className="grid grid-cols-2 justify-items-center">
-				<HandStack hand={hand1}/>
-				<HandStack hand={hand2}/>
-			</div>
-
 		</div>
-		</>
+
 	)
 }
 
