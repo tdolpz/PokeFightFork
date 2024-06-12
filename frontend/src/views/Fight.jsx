@@ -1,10 +1,10 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {UseContextStore} from "../utils/ContextProvider.jsx";
+import {getRandomCards} from "../utils/randomCards.js";
 import PokemonCard from "../components/PokemonCard.jsx";
 import PulseButton from "../components/PulseButton.jsx";
 import HandStack from "../components/HandStack.jsx";
-import {getRandomCards} from "../utils/randomCards.js";
 import boxring from "../assets/boxring2.jpg";
 import pokefightarena from "../assets/fontpokefightarena.png";
 import versus from '../assets/versus.png';
@@ -24,14 +24,15 @@ const getAttackMethod = () => {
 function Fight() {
 
 	const {pokemonData, setOpenCard1, setOpenCard2, openCard1, openCard2} = UseContextStore();
-	const randomCards = getRandomCards(8, 1, 200);
 	const navigate = useNavigate();
+
+	// determine random card stacks
+	const randomCards = getRandomCards(4, 1, 200);
 
 	const [attackPlayer, setAttackPlayer] = useState(getAttacker); // 1 or 2
 	const [attackMethod, setAttackMethod] = useState(getAttackMethod); // attack or spattack
 	const [hand1, setHand1] = useState(randomCards.player1);
 	const [hand2, setHand2] = useState(randomCards.player2);
-
 	const [life1, setLife1] = useState(100);
 	const [life2, setLife2] = useState(100);
 	const [newRound, setNewRound] = useState(false);
@@ -41,8 +42,17 @@ function Fight() {
 	const punch = new Audio(punchSound);
 	const bell = new Audio(boxingbell);
 
-	console.log('-->', hand1);
-	console.log('-->', hand2);
+	//console.log('-->', hand1);
+	//console.log('-->', hand2);
+
+	useEffect(() => {
+		if (newRound) {
+			bell.play();
+			setOpenCard1(hand1[0]);
+			setOpenCard2(hand2[0]);
+		}
+	}, [newRound]);
+
 
 	// get fight params
 	const getFightParams = (pokemonId) => {
@@ -95,36 +105,18 @@ function Fight() {
 			let newLife1, newLife2;
 			let diff = fightParams1[attackMethod] - fightParams2[defenseMethod];
 
-			/*
-			console.log('###############');
-			console.log('attacker: ', 'player 1');
-			console.log('attack method: ', attackMethod);
-			console.log('attack value: ', fightParams1[attackMethod]);
-
-			console.log('defender: ', 'player 2');
-			console.log('defense method defender: ', defenseMethod);
-			console.log('defense value defender: ', fightParams2[defenseMethod]);
-
-			console.log('difference: ', diff);
-			console.log('differencePercentage: ', Math.round(diff * 100 / fightParams2.hp));
-			*/
-
 			// Player 1 has won -> update card of player 2
 			if (diff > 0) {
 				setFightWinner(1);
 				newLife2 = life2 - Math.round(diff * 100 / fightParams2.hp);
-				//console.log('newLife2: ', newLife2);
 				setLife2(newLife2);
 			}
-
 			// Player 2 has won -> update card of player 1
 			else if (diff < 0) {
 				setFightWinner(2);
 				newLife1 = life1 + Math.round(diff * 100 / fightParams1.hp);
-				//console.log('newLife1: ', newLife1);
 				setLife1(newLife1);
 			}
-
 			// Draw
 			else {
 				setFightWinner(0);
@@ -136,37 +128,18 @@ function Fight() {
 		if (attackPlayer === 2) {
 			let newLife1, newLife2;
 			let diff = fightParams2[attackMethod] - fightParams1[defenseMethod];
-
-			/*
-			console.log('###############');
-			console.log('attacker: ', 'player 2');
-			console.log('attack method: ', attackMethod);
-			console.log('attack value: ', fightParams2[attackMethod]);
-
-			console.log('defender: ', 'player 1');
-			console.log('defense method defender: ', defenseMethod);
-			console.log('defense value defender: ', fightParams1[defenseMethod]);
-
-			console.log('difference: ', diff);
-			console.log('differencePercentage: ', Math.round(diff * 100 / fightParams1.hp));
-			*/
-
 			// Player 2 has won -> update card of player 1
 			if (diff > 0) {
 				setFightWinner(2);
 				newLife1 = life1 - Math.round(diff * 100 / fightParams1.hp);
-				//console.log('newLife1: ', newLife1);
 				setLife1(newLife1);
 			}
-
 			// Player 1 has won -> update card of player 2
 			else if (diff < 0) {
 				setFightWinner(1);
 				newLife2 = life2 + Math.round(diff * 100 / fightParams2.hp);
-				//console.log('newLife2: ', newLife2);
 				setLife2(newLife2);
 			}
-
 			// Draw
 			else {
 				setFightWinner(0);
@@ -177,25 +150,21 @@ function Fight() {
 
 	if (hand1.length === 0 || hand2.length === 0) {
 
-		navigate('/result', {
-			state: {
-				hand1: hand1,
-				hand2: hand2,
-				openCard1: openCard1,
-				openCard2: openCard2,
-				life1: life1,
-				life2: life2,
-				isAttacker: (attackPlayer === 1),
-				attackMethod: attackMethod
-			}
-		});
-		return;
-	}
-
-	if (newRound) {
-		bell.play();
-		setOpenCard1(hand1[0]);
-		setOpenCard2(hand2[0]);
+		// give a litte time for re-render the component before routing to result
+		setTimeout(() => {
+			navigate('/result', {
+				state: {
+					hand1: hand1,
+					hand2: hand2,
+					openCard1: openCard1,
+					openCard2: openCard2,
+					life1: life1,
+					life2: life2,
+					isAttacker: (attackPlayer === 1),
+					attackMethod: attackMethod
+				}
+			});
+		}, 10);
 	}
 
 	return (
@@ -212,7 +181,6 @@ function Fight() {
 						<img src={rival} alt="#" className="h-16 mb-4"/>
 					</div>
 
-
 					<div className="relative w-full">
 
 						<div className="absolute top-0 left-0 z-0 size-full flex items-center justify-center">
@@ -221,22 +189,22 @@ function Fight() {
 
 						<div className="grid grid-cols-2 justify-items-center relative z-10 w-full">
 							<div className="flex justify-center flex-col items-center">
-								<PokemonCard
+								{hand1.length > 0 && <PokemonCard
 									id={hand1[0]}
 									life={life1}
 									isAttacker={attackPlayer === 1}
 									attackMethod={attackMethod}
 									isNewRound={isNewRound}
-								/>
+								/>}
 							</div>
 							<div className="flex justify-center flex-col items-center">
-								<PokemonCard
+								{hand2.length > 0 && <PokemonCard
 									id={hand2[0]}
 									life={life2}
 									isAttacker={attackPlayer === 2}
 									attackMethod={attackMethod}
 									isNewRound={isNewRound}
-								/>
+								/>}
 							</div>
 						</div>
 
