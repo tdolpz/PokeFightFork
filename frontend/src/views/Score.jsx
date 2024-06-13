@@ -1,23 +1,31 @@
 import {useNavigate} from "react-router-dom";
-import PulseButton from "../components/PulseButton.jsx";
-import ranking from "../assets/fontRankingblk.png";
-import firstPlace from "../assets/FirstPlace.png";
-import secondPlace from "../assets/SecondPlace.png";
-import thirdPlace from "../assets/ThirdPlace.png";
-import pokefightarena from "../assets/fontpokefightarena.png";
 import boxring from "../assets/boxring2.jpg";
+import pokefightarena from "../assets/fontpokefightarena.png";
+import ranking from "../assets/fontRankingblk.png";
 import trophy from "../assets/poketrophygold-removedbg.png";
-import voicemod from "../assets/pokemon-voicemod.mp3";
+import PulseButton from "../components/PulseButton.jsx";
+import RankingTable from "../components/RankingTable.jsx";
+import {UseContextStore} from "../utils/ContextProvider.jsx";
+
+//import vocemod from "../assets/pokemon-voicemod.mp3";
 
 function Score() {
 
+	const {playerName, playerData} = UseContextStore();
 	const navigate = useNavigate();
-	const voiceMod = new Audio(voicemod);
+	//const voiceMod = new Audio(voicemod);
 
-	const playAgain = () => {
-		navigate('/shuffle');
-		voiceMod.pause();
+	const playerExists = () => {
+		for (let key in playerData) {
+			if (playerData[key].name === playerName) return true;
+		}
+		return false;
 	}
+
+	console.log(playerName);
+	console.log(playerData);
+	console.log(playerExists());
+
 
 	const players = [
 		{rank: 1, name: "Frank", matches: 50, wins: 35},
@@ -40,8 +48,12 @@ function Score() {
 		player.rank = index + 1;
 	});
 
-	return (
+	const playAgain = () => {
+		navigate('/shuffle');
+		//voiceMod.pause();
+	}
 
+	return (
 		<div className="relative bg-indigo-950">
 			<img src={boxring} alt="#" className={"absolute top-0 left-0 h-full w-full object-cover z-0"}/>
 			<div className="relative min-h-screen z-10">
@@ -50,33 +62,7 @@ function Score() {
 					<div className='w-full max-w-[500px] mt-12'>
 						<img src={trophy} alt="Trophy" className="max-w-80 mx-auto"/>
 						<img src={ranking} alt='Ranking' className='w-full max-w-60 my-8 mx-auto '/>
-						<div className='overflow-y-auto h-80'>
-							<div
-								className="bg-orange-400 text-lg text-black font-bold underline decoration-double flex items-center rounded pt-1 pb-2 mb-2">
-								<span className="w-14 text-center">Rank</span>
-								<span className="text-left flex-1 pl-4">Player</span>
-								<span className="text-center w-24">Matches</span>
-								<span className="text-center w-24">Wins</span>
-							</div>
-							{players.map((player, index) => (
-								<div className="bg-orange-200 text-lg text-black flex items-center h-10 rounded mb-2" key={index}>
-							<span className="text-center w-14 font-bold">
-								{player.rank === 1 ? (
-									<img src={firstPlace} alt='1st Place' className='mx-auto size-9'/>
-								) : player.rank === 2 ? (
-									<img src={secondPlace} alt='2nd Place' className='mx-auto size-9'/>
-								) : player.rank === 3 ? (
-									<img src={thirdPlace} alt='3rd Place' className='mx-auto size-8'/>
-								) : (
-									player.rank
-								)}
-							</span>
-									<span className="flex-1 pl-4">{player.name}</span>
-									<span className="w-24 text-center">{player.matches}</span>
-									<span className="w-24 text-center">{player.wins}</span>
-								</div>
-							))}
-						</div>
+						<RankingTable players={players}/>
 					</div>
 					<div className="mt-4 flex justify-center">
 						<PulseButton view="score" handleClick={playAgain}/>

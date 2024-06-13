@@ -2,34 +2,29 @@ import {useQuery} from "@tanstack/react-query";
 import {useEffect, useState} from "react";
 import {Outlet, useNavigate} from "react-router-dom";
 import {UseContextStore} from "../utils/ContextProvider.jsx";
-import axios from "axios";
-
-const fetchData = async () => {
-	const {data} = await axios.get(`http://localhost:8000/pokemon/`);
-	return data;
-};
+import {fetchPlayers, fetchPokemons} from "../utils/queries.js";
 
 function Arena() {
 
-	// Call useQuery to fetch pokemon data
-	const {data, isLoading, isError} = useQuery({
-		queryKey: ["pokemonData"],
-		queryFn: fetchData,
-	});
-
-	const {setPokemonData} = UseContextStore();
-	const navigate = useNavigate();
+	const pokemonQuery = useQuery({queryKey: ["pokemons"], queryFn: fetchPokemons});
+	const playerQuery = useQuery({queryKey: ["player"], queryFn: fetchPlayers});
 	const [loading, setLoading] = useState(true);
+	const {setPokemonData, setPlayerData} = UseContextStore();
+	const navigate = useNavigate();
 
 	useEffect(() => {
-		if (!isLoading) {
-			setPokemonData(data);
+		if (!pokemonQuery.isLoading && !playerQuery.isLoading) {
+			setPokemonData(pokemonQuery.data);
+			setPlayerData(playerQuery.data);
 		}
+	}, [pokemonQuery.isLoading, playerQuery.isLoading, pokemonQuery.data, playerQuery, setPokemonData, setPlayerData]);
+
+	useEffect(() => {
 		setTimeout(() => {
 			setLoading(false);
 			navigate("/start");
 		}, 600);
-	}, [data]);
+	}, []);
 
 	return (
 		<>
@@ -40,8 +35,7 @@ function Arena() {
 					{/*<div className="absolute top-8 right-8 z-20 bg-fuchsia-500">AUDIO CONTROLS</div>*/}
 					<Outlet/>
 				</>
-			)
-			}
+			)}
 		</>
 	);
 }

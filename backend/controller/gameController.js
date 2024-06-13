@@ -1,27 +1,27 @@
-import Test from '../models/gameSchema.js';
+import Player from '../models/gameSchema.js';
 
-export const getData = async (req, res, next) => {
+// get all players
+export const getPlayer = async (req, res, next) => {
 	try {
-		const highscore = await Test.find();
-		if (!highscore.length) {
-			throw { statusCode: 404, message: 'Highscore not found' };
+		const player = await Player.find();
+		if (player.length === 0) {
+			throw {statusCode: 404, message: 'Player not found'};
 		}
-		res.json(highscore);
-	}
-	catch (error) {
+		res.json(player);
+	} catch (error) {
 		next(error);
 	}
 };
 
-export const addData = async (req, res, next) => {
-	const { name } = req.body;
+// add new player
+export const addNewPlayer = async (req, res, next) => {
+	const {name} = req.body;
 	try {
-		const newHighscore = await Test.create({
+		const newPlayer = await Player.create({
 			name
 		});
-		res.status(201).json(newHighscore);
-	}
-	catch (error) {
+		res.status(201).json(newPlayer);
+	} catch (error) {
 		next(error);
 	}
 };

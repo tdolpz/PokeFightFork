@@ -17,7 +17,7 @@ function Start() {
 	const [filledOut, setFilledOut] = useState(false);
 
 	const enterArena = () => {
-		if (filledOut) navigate('/shuffle');
+		if (filledOut) navigate('/score');
 		if (!filledOut) {
 			alert('Please enter your name.');
 			inputElement.current.focus();

@@ -6,6 +6,7 @@ export const ContextProvider = ({children}) => {
 
 	const [playerName, setPlayerName] = useState('unknown');
 	const [pokemonData, setPokemonData] = useState(null);
+	const [playerData, setPlayerData] = useState(null);
 	const [openCard1, setOpenCard1] = useState(null);
 	const [openCard2, setOpenCard2] = useState(null);
 
@@ -14,8 +15,10 @@ export const ContextProvider = ({children}) => {
 
 	const values = {
 		playerName,
-		pokemonData,
 		setPlayerName,
+		playerData,
+		setPlayerData,
+		pokemonData,
 		setPokemonData,
 		openCard1,
 		setOpenCard1,
