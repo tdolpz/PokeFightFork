@@ -6,6 +6,12 @@ const playerSchema = new mongoose.Schema({
 		required: [true, 'name is required'],
 		unique: true,
 		trim: true,
+	},
+	matches: {
+		type: Number,
+	},
+	wins: {
+		type: Number,
 	}
 });
 

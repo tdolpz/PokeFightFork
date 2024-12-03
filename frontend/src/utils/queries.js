@@ -9,3 +9,4 @@ export const fetchPlayers = async () => {
 	const {data} = await axios.get(`http://localhost:8000/player/`);
 	return data;
 };
+

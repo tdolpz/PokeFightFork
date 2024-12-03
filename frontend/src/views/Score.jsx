@@ -1,3 +1,6 @@
+//import vocemod from "../assets/pokemon-voicemod.mp3";
+import axios from "axios";
+import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import boxring from "../assets/boxring2.jpg";
 import pokefightarena from "../assets/fontpokefightarena.png";
@@ -7,26 +10,68 @@ import PulseButton from "../components/PulseButton.jsx";
 import RankingTable from "../components/RankingTable.jsx";
 import {UseContextStore} from "../utils/ContextProvider.jsx";
 
-//import vocemod from "../assets/pokemon-voicemod.mp3";
-
 function Score() {
 
-	const {playerName, playerData} = UseContextStore();
-	const navigate = useNavigate();
 	//const voiceMod = new Audio(voicemod);
+	const {playerName, playerData, currentPlayerId} = UseContextStore();
+	const navigate = useNavigate();
+	const [players, setPlayers] = useState(playerData)
+
+
+	console.log(currentPlayerId);
+
 
 	const playerExists = () => {
 		for (let key in playerData) {
-			if (playerData[key].name === playerName) return true;
+			if (playerData[key].name === playerName) {
+				console.log(playerData[key]._id);
+				return true;
+			}
 		}
 		return false;
 	}
 
-	console.log(playerName);
-	console.log(playerData);
-	console.log(playerExists());
 
+	const addPlayer = async (postData) => {
+		try {
+			const response = await axios.post('http://localhost:8000/player/new', postData);
+			if (response.status === 201) {
+				console.log('player has been added to the leader board');
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}
 
+	const updatePlayer = async (playerId, postData) => {
+		try {
+			const response = await axios.put('http://localhost:8000/player/' + playerId, postData);
+			if (response.status === 201) {
+				console.log('player has been updated');
+			}
+		} catch (error) {
+			console.error(error);
+		}
+	}
+
+	const saveResult = (playerId = '') => {
+
+		if (!playerExists()) {
+			console.log('add player');
+			addPlayer({name: playerName}).then();
+		} else {
+			console.log('player exixts - update player');
+
+			updatePlayer(playerId, {
+				name: playerName,
+				matches: 20,
+				wins: 5
+			}).then();
+		}
+
+	}
+
+	/*
 	const players = [
 		{rank: 1, name: "Frank", matches: 50, wins: 35},
 		{rank: 2, name: "Renke", matches: 45, wins: 30},
@@ -39,19 +84,22 @@ function Score() {
 		{rank: 9, name: "Ali", matches: 20, wins: 15},
 		{rank: 10, name: "Michal", matches: 9, wins: 7},
 	];
+*/
 
 	// Sortiert die Spieler nach dem Verhältnis Wins / Matches. ( Überschreibt die vordefinierten Ränge oben.)
 	players.sort((a, b) => b.wins / b.matches - a.wins / a.matches);
 
 	// Hier wird der Rang vergeben basierend auf der Position im sortierten Array.
-	players.forEach((player, index) => {
-		player.rank = index + 1;
-	});
+	players.forEach((player, index) => player.rank = index + 1);
+
+
+	console.log(players);
 
 	const playAgain = () => {
 		navigate('/shuffle');
 		//voiceMod.pause();
 	}
+
 
 	return (
 		<div className="relative bg-indigo-950">
@@ -67,6 +115,10 @@ function Score() {
 					<div className="mt-4 flex justify-center">
 						<PulseButton view="score" handleClick={playAgain}/>
 					</div>
+
+					<button onClick={() => saveResult}>ADD PLAYER</button>
+					<button onClick={() => saveResult(currentPlayerId)}>UPDATE PLAYER</button>
+
 				</div>
 			</div>
 		</div>

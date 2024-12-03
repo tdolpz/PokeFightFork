@@ -1,26 +1,47 @@
 import {useRef, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {UseContextStore} from "../utils/ContextProvider.jsx";
-import PulseButton from "../components/PulseButton.jsx";
 import darkbrickentrance from "../assets/darkbrickentrance2.jpg";
 import enterthearena from "../assets/enterthearena.png";
 import fontlineinput from "../assets/fontlineinput.png";
 import loudspeaker from "../assets/loudspeaker.png";
 import pokegym from "../assets/pokemon-gym.mp3";
+import PulseButton from "../components/PulseButton.jsx";
+import {UseContextStore} from "../utils/ContextProvider.jsx";
 
 function Start() {
 
-	const {setPlayerName} = UseContextStore();
+	const {playerData, setPlayerName, playerName, setCurrentPlayerId} = UseContextStore();
 	const pokemonGym = new Audio(pokegym);
 	const navigate = useNavigate();
 	const inputElement = useRef();
 	const [filledOut, setFilledOut] = useState(false);
 
+
+	console.log(playerData);
+
+
+	const checkPlayerName = () => {
+		return playerData.filter(item => item.name === playerName);
+	}
+
 	const enterArena = () => {
-		if (filledOut) navigate('/score');
+		if (filledOut) {
+			let playerExists = checkPlayerName();
+
+			if (playerExists.length === 0) {
+				//navigate('/score');
+				alert('Please enter your name.');
+			} else {
+				alert('This Player already exists. Do you want to play as "' + playerName + '"?');
+				//console.log(playerExists[0]._id);
+				setCurrentPlayerId(playerExists[0]._id);
+				navigate('/shuffle');
+			}
+		}
+
 		if (!filledOut) {
 			alert('Please enter your name.');
-			inputElement.current.focus();
+			//inputElement.current.focus();
 		}
 	}
 
