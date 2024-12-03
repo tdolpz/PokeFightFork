@@ -7,6 +7,7 @@ import Shuffle from "./views/Shuffle.jsx";
 import Start from "./views/Start.jsx";
 
 function App() {
+
 	return (
 		<Routes>
 			<Route path='/' element={<Arena/>}>
