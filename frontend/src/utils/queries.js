@@ -1,12 +1,12 @@
 import axios from "axios";
 
 export const fetchPokemons = async () => {
-	const {data} = await axios.get(`http://localhost:8000/pokemon/`);
+	const {data} = await axios.get(`/api/pokemon`);
 	return data;
 };
 
 export const fetchPlayers = async () => {
-	const {data} = await axios.get(`http://localhost:8000/player/`);
+	const {data} = await axios.get(`/api/player`);
 	return data;
 };
 
