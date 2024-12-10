@@ -10,39 +10,35 @@ import {UseContextStore} from "../utils/ContextProvider.jsx";
 
 function Start() {
 
-	const {playerData, setPlayerName, playerName, setCurrentPlayerId} = UseContextStore();
+	const {playerData, setPlayerName, playerName, setPlayerId} = UseContextStore();
 	const pokemonGym = new Audio(pokegym);
 	const navigate = useNavigate();
 	const inputElement = useRef();
 	const [filledOut, setFilledOut] = useState(false);
 
-
-	console.log(playerData);
-
-
-	const checkPlayerName = () => {
-		return playerData.filter(item => item.name === playerName);
-	}
-
 	const enterArena = () => {
-		if (filledOut) {
-			let playerExists = checkPlayerName();
 
-			if (playerExists.length === 0) {
-				//navigate('/score');
-				alert('Please enter your name.');
-			} else {
+		if (filledOut) {
+
+			// check for existing player
+			let existingPlayer = playerData.filter(item => item.name === playerName);
+
+			// new player
+			if (existingPlayer.length === 0) {
+				setPlayerId(null);
+				navigate('/score');
+			}
+			// player already exists
+			else {
 				alert('This Player already exists. Do you want to play as "' + playerName + '"?');
-				//console.log(playerExists[0]._id);
-				setCurrentPlayerId(playerExists[0]._id);
-				navigate('/shuffle');
+				setPlayerId(existingPlayer[0]._id);
+				navigate('/score');
 			}
 		}
-
-		if (!filledOut) {
+		else {
 			alert('Please enter your name.');
-			//inputElement.current.focus();
 		}
+
 	}
 
 	const handleChange = (e) => {
@@ -56,13 +52,7 @@ function Start() {
 		enterArena();
 	}
 
-	const playSound = () => {
-		if (pokemonGym.paused) {
-			pokemonGym.play();
-		} else {
-			pokemonGym.pause();
-		}
-	}
+	const playSound = () => (pokemonGym.paused) ? pokemonGym.play() : pokemonGym.pause();
 
 	return (
 		<div className="relative bg-indigo-950">
@@ -87,7 +77,7 @@ function Start() {
 					<img src={fontlineinput} alt="#" className="mb-8"/>
 
 					<button onClick={playSound} className="opacity-60 my-6">
-						<img className="max-w-8 mr-4" src={loudspeaker}/>
+						<img className="max-w-8 mr-4" src={loudspeaker} alt="#"/>
 					</button>
 
 					<PulseButton view="start" handleClick={enterArena}/>

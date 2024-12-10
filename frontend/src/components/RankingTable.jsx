@@ -5,7 +5,7 @@ import thirdPlace from "../assets/ThirdPlace.png";
 function RankingTable({players}) {
 
 	return (
-		<div className='overflow-y-auto h-80'>
+		<div className='overflow-y-auto'>
 			<div
 				className="bg-orange-400 text-lg text-black font-bold underline decoration-double flex items-center rounded pt-1 pb-2 mb-2">
 				<span className="w-14 text-center">Rank</span>

@@ -4,8 +4,8 @@ const Context = createContext();
 export const UseContextStore = () => useContext(Context);
 export const ContextProvider = ({children}) => {
 
-	const [playerName, setPlayerName] = useState('unknown');
-	const [currentPlayerId, setCurrentPlayerId] = useState(null);
+	const [playerName, setPlayerName] = useState(null);
+	const [playerId, setPlayerId] = useState(null);
 	const [pokemonData, setPokemonData] = useState(null);
 	const [playerData, setPlayerData] = useState(null);
 	const [openCard1, setOpenCard1] = useState(null);
@@ -15,18 +15,18 @@ export const ContextProvider = ({children}) => {
 	}, []);
 
 	const values = {
-		playerName,
-		setPlayerName,
 		playerData,
-		setPlayerData,
+		playerName,
 		pokemonData,
-		setPokemonData,
 		openCard1,
-		setOpenCard1,
 		openCard2,
-		setOpenCard2,
-		currentPlayerId,
-		setCurrentPlayerId
+		playerId,
+		setPlayerData,
+		setPlayerName,
+		setPlayerId,
+		setPokemonData,
+		setOpenCard1,
+		setOpenCard2
 	};
 
 	return <Context.Provider value={values}>{children}</Context.Provider>;

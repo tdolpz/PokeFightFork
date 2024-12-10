@@ -1,13 +1,13 @@
 import {useLocation, useNavigate} from "react-router-dom";
-import {UseContextStore} from "../utils/ContextProvider.jsx";
-import PulseButton from "../components/PulseButton";
-import CardBack from "../components/CardBack.jsx";
-import defeatImg from "../assets/defeat.png";
-import victoryImg from "../assets/victory.png";
-import you from "../assets/fontyoublk.png";
-import rival from "../assets/fontrivalblk.png";
 import boxring from "../assets/boxring2.jpg";
+import defeatImg from "../assets/defeat.png";
 import pokefightarena from "../assets/fontpokefightarena.png";
+import rival from "../assets/fontrivalblk.png";
+import you from "../assets/fontyoublk.png";
+import victoryImg from "../assets/victory.png";
+import CardBack from "../components/CardBack.jsx";
+import PulseButton from "../components/PulseButton";
+import {UseContextStore} from "../utils/ContextProvider.jsx";
 
 //import voicemod from "../assets/pokemon-voicemod.mp3";
 
@@ -34,8 +34,9 @@ function Result() {
 	if (state.hand1.length === 0) victory = 2;
 	if (state.hand2.length === 0) victory = 1;
 
-	return (
 
+
+	return (
 
 		<div className="relative bg-indigo-950">
 			<img src={boxring} alt="#" className={"absolute top-0 left-0 h-full w-full object-cover z-0"}/>

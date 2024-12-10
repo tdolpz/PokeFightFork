@@ -9,7 +9,7 @@ function Arena() {
 	const pokemonQuery = useQuery({queryKey: ["pokemons"], queryFn: fetchPokemons});
 	const playerQuery = useQuery({queryKey: ["player"], queryFn: fetchPlayers});
 	const [loading, setLoading] = useState(true);
-	const {setPokemonData, setPlayerData} = UseContextStore();
+	const {setPokemonData, setPlayerData } = UseContextStore();
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -17,13 +17,21 @@ function Arena() {
 			setPokemonData(pokemonQuery.data);
 			setPlayerData(playerQuery.data);
 		}
-	}, [pokemonQuery.isLoading, playerQuery.isLoading, pokemonQuery.data, playerQuery, setPokemonData, setPlayerData]);
+	}, [
+		pokemonQuery.isLoading,
+		playerQuery.isLoading,
+		pokemonQuery.data,
+		playerQuery,
+		setPokemonData,
+		setPlayerData]);
 
 	useEffect(() => {
 		setTimeout(() => {
 			setLoading(false);
 			navigate("/start");
 		}, 600);
+
+
 	}, []);
 
 	return (

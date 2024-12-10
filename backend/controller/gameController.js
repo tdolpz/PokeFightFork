@@ -8,7 +8,8 @@ export const getPlayer = async (req, res, next) => {
 			throw {statusCode: 404, message: 'Player not found'};
 		}
 		res.json(player);
-	} catch (error) {
+	}
+	catch (error) {
 		next(error);
 	}
 };
@@ -21,7 +22,8 @@ export const addNewPlayer = async (req, res, next) => {
 			name, matches, wins
 		});
 		res.status(201).json(newPlayer);
-	} catch (error) {
+	}
+	catch (error) {
 		next(error);
 	}
 };
@@ -41,7 +43,8 @@ export const updatePlayer = async (req, res, next) => {
 			throw {statusCode: 404, message: 'Player not found'};
 		}
 		res.json(updatedPlayer);
-	} catch (error) {
+	}
+	catch (error) {
 		next(error);
 	}
 }
