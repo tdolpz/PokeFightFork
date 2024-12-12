@@ -10,7 +10,6 @@ export const fetchPlayers = async () => {
 	return data;
 };
 
-
 export const addPlayer = async (postData) => {
 	try {
 		const response = await axios.post(`${import.meta.env.VITE_SERVER_URL}/player/new`, postData);
