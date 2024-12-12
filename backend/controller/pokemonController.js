@@ -1,5 +1,8 @@
+import { createRequire } from "module";
+const pokemonJson = createRequire(import.meta.url)("../pokedex.json");
+
 // import static json file
-import pokemonJson from '../pokedex.json' assert {type: 'json'};
+//import pokemonJson from '../pokedex.json' assert {type: 'json'};
 
 // send json data of all Pokemon to the client
 export const getAllPokemons = async (req, res) => {
