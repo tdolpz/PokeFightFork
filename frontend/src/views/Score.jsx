@@ -95,11 +95,10 @@ function Score() {
 	}
 
 	return (
-		<div className="relative bg-indigo-950">
+		<div className="relative bg-indigo-950 bg-boxring bg-cover bg-center w-screen h-screen">
 			<img src={boxring} alt="#" className={"absolute top-0 left-0 h-full w-full object-cover z-0"}/>
 			<div className="relative min-h-screen z-10">
 				<div className="inner-container">
-					<img src={pokefightarena} alt="Pokefight-Arena" className="w-full max-w-[500px]"/>
 					<div className='w-full max-w-[500px] mt-12'>
 						<img src={trophy} alt="Trophy" className="max-w-80 mx-auto"/>
 						<img src={ranking} alt='Ranking' className='w-full max-w-60 my-8 mx-auto '/>

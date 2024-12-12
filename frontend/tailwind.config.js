@@ -7,8 +7,8 @@ export default {
 		extend: {
 			backgroundImage: {
 				'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-				'darkbrickentrance': 'url("./src/assets/darkbrickentrance2.jpg")',
-				'boxring': 'url("./src/assets/boxring2.jpg")',
+				'darkbrickentrance': 'url("./assets/darkbrickentrance2.jpg")',
+				'boxring': 'url("./assets/boxring2.jpg")',
 			},
 			fontFamily: {
 				pokemon: ["pokemon", "sans-serif"]
