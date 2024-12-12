@@ -5,7 +5,6 @@ import {getRandomCards} from "../utils/randomCards.js";
 import PokemonCard from "../components/PokemonCard.jsx";
 import PulseButton from "../components/PulseButton.jsx";
 import HandStack from "../components/HandStack.jsx";
-import boxring from "../assets/boxring2.jpg";
 import pokefightarena from "../assets/fontpokefightarena.png";
 import versus from '../assets/versus.png';
 import you from "../assets/fontyoublk.png";
@@ -169,8 +168,7 @@ function Fight() {
 
 	return (
 
-		<div className="relative bg-indigo-950">
-			<img src={boxring} alt="#" className={"absolute top-0 left-0 h-full w-full object-cover z-0"}/>
+		<div className="relative bg-indigo-950 bg-boxring bg-cover bg-center w-screen h-screen">
 			<div className="relative min-h-screen z-10">
 				<div className="inner-container">
 
