@@ -1,15 +1,15 @@
 import {Route, Routes} from "react-router-dom";
-import Start from "./views/Start.jsx";
-import Shuffle from "./views/Shuffle.jsx";
 import Fight from "./views/Fight.jsx";
 import Result from "./views/Result.jsx";
 import Score from "./views/Score.jsx";
-import Arena from "./views/Arena.jsx";
+import Shuffle from "./views/Shuffle.jsx";
+import Start from "./views/Start.jsx";
+import Init from "./views/Init.jsx";
 
 function App() {
 	return (
 		<Routes>
-			<Route path='/' element={<Arena/>}>
+			<Route path='/' element={<Init/>}>
 				<Route path='/start' element={<Start/>}/>
 				<Route path='/shuffle' element={<Shuffle/>}/>
 				<Route path='/fight' element={<Fight/>}/>

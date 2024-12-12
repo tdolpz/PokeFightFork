@@ -39,11 +39,10 @@
   }
 
   .start-input {
-    @apply bg-transparent mx-16 text-3xl tracking-wider text-amber-500 text-center border-transparent overflow-visible font-medium uppercase;
+    @apply bg-transparent mx-16 text-3xl tracking-wider text-amber-500 text-center border-transparent overflow-visible font-medium;
     @apply placeholder:text-amber-500/70 placeholder:-translate-y-4;
     @apply focus:outline-none focus:border-transparent focus:ring-0;
   }
-
 
 }
 
@@ -52,5 +51,5 @@
   font-style: normal;
   font-weight: normal;
   src: local('Pokemon Solid Normal'),
-  url('../public/pokemon-solid.woff') format('woff');
+  url('/pokemon-solid.woff') format('woff');
 }
